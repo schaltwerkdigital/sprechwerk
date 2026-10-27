@@ -366,7 +366,7 @@ struct ModeIcon: View {
     }
 }
 
-/// "Sprechwerk", Schaltwerk Digital, based on Blitztext. The Blitztext and Blackboat marks are not part of the
+/// "Sprechwerk" by Schaltwerk Digital. The Blitztext and Blackboat marks are not part of the
 /// MIT license (TRADEMARKS.md), so the fork shows its own.
 struct BrandRow: View {
     var body: some View {
@@ -379,7 +379,7 @@ struct BrandRow: View {
             VStack(alignment: .leading, spacing: 0) {
                 Text("Sprechwerk")
                     .font(.ui(15, .bold))
-                Text("Schaltwerk Digital \u{00B7} auf Basis von Blitztext")
+                Text("Schaltwerk Digital")
                     .font(.ui(11))
                     .foregroundStyle(.secondary)
             }
