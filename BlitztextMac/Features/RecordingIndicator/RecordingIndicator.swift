@@ -162,16 +162,16 @@ private final class FirstClickHostingView<Content: View>: NSHostingView<Content>
     override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
 }
 
-/// The pill: night surface with lilac, the same in light and dark mode, so it reads on
-/// any window behind it.
+/// The pill: Schaltwerk dark grey with turquoise, the same in light and dark mode, so it
+/// reads on any window behind it.
 struct RecordingPill: View {
     let model: RecordingIndicatorModel
     let appState: AppState
     let onStop: () -> Void
     var onOpenMeeting: () -> Void = {}
 
-    private static let lilac = BlackboatColor.hex(0xBB84DF)
-    private static let night = BlackboatColor.hex(0x050722)
+    private static let lilac = BlackboatColor.hex(0x2CD5C4)
+    private static let night = BlackboatColor.hex(0x2A2D34)
     /// The capsule plus room for its shadow.
     static let panelSize = CGSize(width: 180, height: 72)
 

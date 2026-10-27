@@ -155,7 +155,7 @@ struct AppSettings: Codable {
     var muteOutputWhileRecording: Bool = true
     /// Long word-for-word dictation gets paragraph breaks at sentence ends.
     var automaticParagraphs: Bool = false
-    /// A small lilac pill at the bottom of the screen while recording and processing.
+    /// A small turquoise pill at the bottom of the screen while recording and processing.
     var showsRecordingIndicator: Bool = true
     /// Write the summary right after a meeting. Off: transcript by person only, faster;
     /// the summary can still be created later.

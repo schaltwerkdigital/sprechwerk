@@ -179,23 +179,86 @@ private enum MenuBarStatusIconRenderer {
         case processing
     }
 
-    /// Sprechwerk's mark: four sound bars, the same as menubar_icon.png.
+    /// Sprechwerk's mark, the same as menubar_icon.png: the Schaltwerk speech bubble with four
+    /// sound bars cut out where the logo has "SW". While recording the bars fill and pulse.
     private static func drawBaseIcon(in bounds: CGRect, status: MenuBarStatus, frame: Int) {
-        let barHeights: [CGFloat] = [6, 12, 9, 4]
-        let barWidth: CGFloat = 2
-        let barSpacing: CGFloat = 1.6
-        let totalWidth = (CGFloat(barHeights.count) * barWidth) + (CGFloat(barHeights.count - 1) * barSpacing)
-        let originX = bounds.midX - (totalWidth / 2)
         let baseAlpha = baseAlphaValues(for: status, frame: frame)
+        let bubble = BubbleGeometry(in: bounds.insetBy(dx: 1, dy: 1))
+        NSColor.black.setFill()
+        bubble.path().fill()
 
-        for (index, height) in barHeights.enumerated() {
-            let x = originX + CGFloat(index) * (barWidth + barSpacing)
-            let y = bounds.midY - (height / 2)
-            let rect = CGRect(x: x, y: y, width: barWidth, height: height)
-            let path = NSBezierPath(roundedRect: rect, xRadius: 1, yRadius: 1)
+        guard let context = NSGraphicsContext.current else { return }
+        context.saveGraphicsState()
+        context.compositingOperation = .destinationOut
+        for (index, bar) in bubble.bars().enumerated() {
             NSColor.black.withAlphaComponent(baseAlpha[index]).setFill()
-            path.fill()
+            NSBezierPath(roundedRect: bar, xRadius: bar.width / 2, yRadius: bar.width / 2).fill()
         }
+        context.restoreGraphicsState()
+    }
+
+    /// logo-sw-bubble-fullcolor-positive.svg (61.68 x 52.97), fitted into a rect.
+    private struct BubbleGeometry {
+        static let size = CGSize(width: 61.68, height: 52.97)
+        let scale: CGFloat
+        let originX: CGFloat
+        let top: CGFloat
+
+        init(in rect: CGRect) {
+            scale = min(rect.width / Self.size.width, rect.height / Self.size.height)
+            originX = rect.midX - Self.size.width * scale / 2
+            top = rect.midY + Self.size.height * scale / 2
+        }
+
+        /// SVG coordinates (y down) to AppKit (y up).
+        func point(_ x: CGFloat, _ y: CGFloat) -> NSPoint {
+            NSPoint(x: originX + x * scale, y: top - y * scale)
+        }
+
+        func path() -> NSBezierPath {
+            let path = NSBezierPath()
+            path.move(to: point(55.7, 52.97))
+            path.line(to: point(16.07, 52.97))
+            path.curve(to: point(0, 36.91), controlPoint1: point(7.23, 52.97), controlPoint2: point(0, 45.74))
+            path.line(to: point(0, 16.07))
+            path.curve(to: point(16.07, 0), controlPoint1: point(0, 7.23), controlPoint2: point(7.23, 0))
+            path.line(to: point(36.91, 0))
+            path.curve(to: point(52.97, 16.07), controlPoint1: point(45.74, 0), controlPoint2: point(52.97, 7.23))
+            path.line(to: point(52.97, 36.91))
+            path.curve(to: point(61.68, 52.98), controlPoint1: point(52.97, 49.42), controlPoint2: point(61.68, 52.98))
+            path.close()
+            return path
+        }
+
+        /// Four bars centered on the rounded square, bolder than in the app icon so they
+        /// still read at menu bar size.
+        func bars() -> [CGRect] {
+            let heights: [CGFloat] = [14, 26, 19.5, 9]
+            let width: CGFloat = 5.2
+            let gap: CGFloat = 3.0
+            let total = CGFloat(heights.count) * width + CGFloat(heights.count - 1) * gap
+            let center = point(Self.size.height / 2, Self.size.height / 2)
+            return heights.enumerated().map { index, height in
+                CGRect(
+                    x: center.x + (CGFloat(index) * (width + gap) - total / 2) * scale,
+                    y: center.y - height * scale / 2,
+                    width: width * scale,
+                    height: height * scale
+                )
+            }
+        }
+    }
+
+    /// The badge sits on the bubble's tail; a thin gap around it keeps the two apart.
+    private static func clearBadgeArea(in bounds: CGRect) {
+        let badgeSize: CGFloat = 7.5
+        let badgeRect = CGRect(x: bounds.maxX - badgeSize - 0.8, y: bounds.minY + 0.8, width: badgeSize, height: badgeSize)
+        guard let context = NSGraphicsContext.current else { return }
+        context.saveGraphicsState()
+        context.compositingOperation = .destinationOut
+        NSColor.black.setFill()
+        NSBezierPath(ovalIn: badgeRect.insetBy(dx: -1.4, dy: -1.4)).fill()
+        context.restoreGraphicsState()
     }
 
     private static func drawActivityBadge(
@@ -205,6 +268,7 @@ private enum MenuBarStatusIconRenderer {
         frame: Int,
         phase: ActivityPhase
     ) {
+        clearBadgeArea(in: bounds)
         let badgeSize: CGFloat = 7.5
         let badgeRect = CGRect(
             x: bounds.maxX - badgeSize - 0.8,
@@ -254,14 +318,15 @@ private enum MenuBarStatusIconRenderer {
         haloPath.lineWidth = phase == .recording ? 0.9 : 0.75
         haloPath.stroke()
 
-        drawBadge(systemName: systemName, in: bounds, fillOpacity: badgeOpacity)
+        drawBadge(systemName: systemName, in: bounds, fillOpacity: badgeOpacity, clearsArea: false)
 
         if phase == .processing {
             drawProcessingDot(around: badgeRect, frame: frame)
         }
     }
 
-    private static func drawBadge(systemName: String, in bounds: CGRect, fillOpacity: CGFloat) {
+    private static func drawBadge(systemName: String, in bounds: CGRect, fillOpacity: CGFloat, clearsArea: Bool = true) {
+        if clearsArea { clearBadgeArea(in: bounds) }
         let badgeSize: CGFloat = 7.5
         let badgeRect = CGRect(
             x: bounds.maxX - badgeSize - 0.8,

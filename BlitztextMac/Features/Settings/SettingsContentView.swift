@@ -623,7 +623,7 @@ struct CustomizeSettingsView: View {
                 Toggle("Aufnahme unten am Bildschirm zeigen", isOn: $appState.appSettings.showsRecordingIndicator)
                     .toggleStyle(.trailingSwitch)
 
-                Text("Eine kleine lila Anzeige bewegt sich mit deiner Stimme, solange Sprechwerk aufnimmt und schreibt. Ein Klick darauf stoppt die Aufnahme.")
+                Text("Eine kleine t\u{00FC}rkise Anzeige bewegt sich mit deiner Stimme, solange Sprechwerk aufnimmt und schreibt. Ein Klick darauf stoppt die Aufnahme.")
                     .font(.ui(12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)

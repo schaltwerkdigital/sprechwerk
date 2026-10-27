@@ -5,38 +5,37 @@ import UIKit
 import AppKit
 #endif
 
-// Blackboat design tokens for the native apps.
-// Source of truth: bOS-1 design-system/tokens/design.json. Values are copied, not invented:
-// light = "day" mode, dark = "night" mode (the only dark mode in the system).
-// When design.json changes, update this file; do not add colours elsewhere in the apps.
+// Design tokens for the native apps. Sprechwerk replaces the Blackboat values with the
+// Schaltwerk Digital palette (schaltwerkdigital.de): turquoise 2CD5C4, dark turquoise 009384,
+// green 46BB0F, dark grey 2A2D34, light grey F6F7F9. Light mode uses the dark turquoise for
+// text and buttons, the turquoise has too little contrast on white. The names stay, so
+// Blitztext updates merge without touching every view; do not add colours elsewhere.
 
 enum BlackboatColor {
     // MARK: Surfaces and text
 
-    static let surfaceBase = dynamic(light: 0xFCFCFC, dark: 0x050722)
-    static let surfaceElevated = dynamic(light: 0xFFFFFF, dark: 0x0E102F)
-    static let surfaceHover = dynamic(light: 0xF5F5F5, dark: 0x191B46)
-    static let textPrimary = dynamic(light: 0x111111, dark: 0xFFFFFF)
-    static let textSecondary = dynamic(light: 0x5C5C5C, dark: 0xF2F4F8)
-    static let border = dynamic(light: 0xCFCECD, dark: 0x4F4D69)
+    static let surfaceBase = dynamic(light: 0xF6F7F9, dark: 0x1F2126)
+    static let surfaceElevated = dynamic(light: 0xFFFFFF, dark: 0x2A2D34)
+    static let surfaceHover = dynamic(light: 0xF1F2F4, dark: 0x353941)
+    static let textPrimary = dynamic(light: 0x2A2D34, dark: 0xFFFFFF)
+    static let textSecondary = dynamic(light: 0x5C5F66, dark: 0xD9DBDF)
+    static let border = dynamic(light: 0xE4E4E4, dark: 0x4A4E57)
 
     // MARK: Actions
 
-    /// Primary buttons and the recording action: button.primary of day and night.
-    static let buttonPrimary = dynamic(light: 0x3E41F4, dark: 0x8337A8)
-    static let buttonPrimaryPressed = dynamic(light: 0x0B0EC1, dark: 0x5F287B)
-    static let buttonPrimaryText = Color.white
-    /// Accent for text, icons and selection. Night uses its tertiary tone, the
-    /// primary is too dark to read on night surfaces.
-    static let accent = dynamic(light: 0x3E41F4, dark: 0xBB84DF)
-    static let focusRing = dynamic(light: 0x70A5FF, dark: 0xBB84DF)
+    /// Primary buttons and the recording action: dark turquoise by day, turquoise at night.
+    static let buttonPrimary = dynamic(light: 0x009384, dark: 0x2CD5C4)
+    static let buttonPrimaryPressed = dynamic(light: 0x00756A, dark: 0x23AA9C)
+    static let buttonPrimaryText = dynamic(light: 0xFFFFFF, dark: 0x14161A)
+    /// Accent for text, icons and selection.
+    static let accent = dynamic(light: 0x009384, dark: 0x2CD5C4)
+    static let focusRing = dynamic(light: 0x2CD5C4, dark: 0x2CD5C4)
 
     // MARK: Feedback
 
-    static let success = dynamic(light: 0x5BDFBD, dark: 0x5BDFBD)
-    /// Positive status as text or icon. The success green has too little contrast on
-    /// day surfaces, so light mode uses the day accent; night keeps the green.
-    static let successForeground = dynamic(light: 0x3E41F4, dark: 0x5BDFBD)
+    static let success = dynamic(light: 0x46BB0F, dark: 0x46BB0F)
+    /// Positive status as text or icon: a darker green by day for contrast.
+    static let successForeground = dynamic(light: 0x358C0B, dark: 0x6FD33A)
     static let error = dynamic(light: 0xD94C76, dark: 0xD94C76)
 
     // MARK: Accent sources (day, evening, night)
@@ -48,18 +47,18 @@ enum BlackboatColor {
 
         var primary: Color {
             switch self {
-            case .day: return dynamic(light: 0x3E41F4, dark: 0x70A5FF)
-            case .evening: return dynamic(light: 0x593AB6, dark: 0xA592DD)
-            case .night: return dynamic(light: 0x8337A8, dark: 0xBB84DF)
+            case .day: return dynamic(light: 0x009384, dark: 0x2CD5C4)
+            case .evening: return dynamic(light: 0x358C0B, dark: 0x6FD33A)
+            case .night: return dynamic(light: 0x2A2D34, dark: 0xC9CDD4)
             }
         }
 
         /// Filled surfaces (buttons, the microphone): primary to secondary in every mode.
         var gradient: [Color] {
             switch self {
-            case .day: return [hex(0x3E41F4), hex(0x0B0EC1)]
-            case .evening: return [hex(0x593AB6), hex(0x3C277C)]
-            case .night: return [hex(0x8337A8), hex(0x5F287B)]
+            case .day: return [hex(0x2CD5C4), hex(0x009384)]
+            case .evening: return [hex(0x46BB0F), hex(0x358C0B)]
+            case .night: return [hex(0x4A4E57), hex(0x2A2D34)]
             }
         }
     }

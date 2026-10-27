@@ -20,11 +20,11 @@ struct MeetingView: View {
 
     private var meeting: MeetingController { appState.meeting }
 
-    /// The Blackboat accents, one per person.
+    /// Schaltwerk colors plus two neutrals, one per person.
     private static let personColors: [Color] = [
-        BlackboatColor.Source.day.primary, BlackboatColor.Source.night.primary, BlackboatColor.Source.evening.primary,
-        BlackboatColor.dynamic(light: 0x0B0EC1, dark: 0xB7F1F9), BlackboatColor.dynamic(light: 0x5F287B, dark: 0xBB84DF),
-        BlackboatColor.dynamic(light: 0x3C277C, dark: 0xA592DD),
+        BlackboatColor.Source.day.primary, BlackboatColor.Source.evening.primary, BlackboatColor.Source.night.primary,
+        BlackboatColor.dynamic(light: 0x00655B, dark: 0x8FEFE5), BlackboatColor.dynamic(light: 0x2D6E0A, dark: 0xA8E58A),
+        BlackboatColor.dynamic(light: 0x6B7079, dark: 0x9EA3AB),
     ]
 
     var body: some View {

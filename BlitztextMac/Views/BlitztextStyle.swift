@@ -8,23 +8,23 @@ import AppKit
 enum BlitztextTheme {
     /// Blackboat tokens shared with iOS (BlitztextShared/Design): day in light, night in dark.
     static let accent = BlackboatColor.accent
-    /// Text and icons on a filled accent: white by day, the night contrast ink on lilac.
-    static let onAccent = BlackboatColor.dynamic(light: 0xFFFFFF, dark: 0x0F1116)
+    /// Text and icons on a filled accent: white on dark turquoise, dark ink on turquoise.
+    static let onAccent = BlackboatColor.dynamic(light: 0xFFFFFF, dark: 0x14161A)
 
     static let ready = BlackboatColor.successForeground
     static let danger = BlackboatColor.error
 
     /// Page behind the cards: surface hover by day, surface base at night.
-    static let page = BlackboatColor.dynamic(light: 0xF5F5F5, dark: 0x050722)
+    static let page = BlackboatColor.dynamic(light: 0xF6F7F9, dark: 0x1F2126)
     /// Cards and grouped rows: surface elevated.
     static let card = BlackboatColor.surfaceElevated
     /// Fills inside a card: fields, tracks.
-    static let inset = BlackboatColor.dynamic(light: 0xF5F5F5, dark: 0x191B46)
+    static let inset = BlackboatColor.dynamic(light: 0xF1F2F4, dark: 0x353941)
     /// Selected and tonal elements: the tertiary accent at low strength.
-    static let tonal = BlackboatColor.dynamic(light: 0x70A5FF, dark: 0xBB84DF).opacity(0.26)
-    static let onTonal = BlackboatColor.dynamic(light: 0x0B0EC1, dark: 0xFFFFFF)
-    /// The lilac of Blackboat's night accents, for the recording indicator.
-    static let lilac = BlackboatColor.dynamic(light: 0x8337A8, dark: 0xBB84DF)
+    static let tonal = BlackboatColor.dynamic(light: 0x2CD5C4, dark: 0x2CD5C4).opacity(0.24)
+    static let onTonal = BlackboatColor.dynamic(light: 0x00655B, dark: 0xFFFFFF)
+    /// Sprechwerk: Schaltwerk turquoise where Blitztext uses its lilac (name kept for merges).
+    static let lilac = BlackboatColor.dynamic(light: 0x009384, dark: 0x2CD5C4)
 
     static let cardShadow = Color(nsColor: NSColor(name: nil) { appearance in
         appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? .clear : NSColor(srgbRed: 0.05, green: 0.07, blue: 0.11, alpha: 0.07)
