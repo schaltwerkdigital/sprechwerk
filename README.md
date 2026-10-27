@@ -10,6 +10,11 @@
   <a href="https://github.com/cmagnussen/blitztext-app">Blitztext</a> für Schaltwerk Digital.
 </p>
 
+> **Sprechwerk basiert auf [Blitztext](https://github.com/cmagnussen/blitztext-app) von
+> Blackboat.** App, Spracherkennung, Modi und Meetings stammen aus Blitztext. Schaltwerk hat
+> den Team-Wortschatz und das eigene Branding ergänzt. Danke an Blackboat und alle, die zu
+> Blitztext beigetragen haben. Mehr unter [Credits](#credits).
+
 Kürzel halten, sprechen, loslassen. Sprechwerk schreibt den Text dort hin, wo der Cursor
 steht: in Claude, Slack, ClickUp, Missive, Outlook oder jedes andere Feld. Die Spracherkennung
 läuft auf dem Mac, der Ton verlässt das Gerät nicht.
@@ -137,12 +142,40 @@ Modell-Download:   Hugging Face, einmal je Modell
 
 Sprechwerk hat kein Backend und sammelt keine Daten. Details in [docs/privacy.md](docs/privacy.md).
 
-## Herkunft und Lizenz
+## Credits
 
-Sprechwerk basiert auf [Blitztext](https://github.com/cmagnussen/blitztext-app) von
-Blackboat, MIT-Lizenz. Danke an Blackboat und alle Beitragenden. Name, Logo und Icon von
-Blitztext sind nicht Teil der Lizenz, deshalb hat der Fork eigene (siehe
-[TRADEMARKS.md](TRADEMARKS.md)). Sprechwerk wird nicht von Blackboat betreut.
+**[Blitztext](https://github.com/cmagnussen/blitztext-app)** von **Blackboat** ist die Grundlage
+von Sprechwerk: Konzept, App und fast der gesamte Code. Sprechwerk folgt der Einladung von
+Blitztext, den Code zu nutzen, anzupassen und weiterzugeben. Danke an Blackboat und an alle
+[Beitragenden von Blitztext](https://github.com/cmagnussen/blitztext-app/graphs/contributors),
+deren Pull Requests die App geprägt haben, darunter die automatischen Absätze, Build-Korrekturen
+und der Abbruch-Fix.
 
-Lizenztexte aller Bestandteile: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), auch in der
-App unter Einstellungen > Allgemein > Über Sprechwerk.
+Blitztext und damit auch Sprechwerk stehen auf den Schultern von:
+
+- **[FluidAudio](https://github.com/FluidInference/FluidAudio)**, **Moondream** und **NVIDIA**
+  für Parakeet Ultra auf Core ML
+- **[WhisperKit](https://github.com/argmaxinc/argmax-oss-swift)** von Argmax und **OpenAI**
+  für Whisper
+- **[Sparkle](https://sparkle-project.org)** für Updates
+- **Google** für Gemma 4 und **[MLX](https://github.com/ml-explore/mlx-swift)**, das es auf dem Mac
+  laufen lässt
+- **[Public Sans](https://github.com/uswds/public-sans)** als Schrift
+- der **Open-Source-Diktier-Community**, die Blitztext mit inspiriert hat
+
+Was Schaltwerk ergänzt hat: Team-Wortschatz aus dem Brain, Zusammenführung mit dem
+persönlichen Wörterbuch, kürzere KI-Prompts, eigenes Branding, Installer und Release-Workflow.
+
+Sprechwerk wird von Schaltwerk Digital betreut, nicht von Blackboat. Fehler bitte hier melden,
+nicht bei Blitztext. Was allgemein nützlich ist, geben wir gern als Pull Request an Blitztext
+zurück.
+
+## Lizenz
+
+MIT, siehe [LICENSE](LICENSE). Der Copyright-Vermerk von Blitztext bleibt erhalten, die
+Änderungen von Schaltwerk stehen unter derselben Lizenz.
+
+Name, Logo und Icon von Blitztext sind nicht Teil der Lizenz, deshalb hat der Fork eigene
+(siehe [TRADEMARKS.md](TRADEMARKS.md)). Lizenztexte aller Bestandteile:
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), auch in der App unter Einstellungen >
+Allgemein > Über Sprechwerk > Lizenzen und Hinweise.
