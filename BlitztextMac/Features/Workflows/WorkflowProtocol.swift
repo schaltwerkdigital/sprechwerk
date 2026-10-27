@@ -162,6 +162,10 @@ struct AppSettings: Codable {
     var summarizesMeetings: Bool = true
     /// Team vocabulary file (Sprechwerk); empty means the Brain vault is found automatically.
     var teamVocabularyPath: String = ""
+    /// Microphone for dictation (Sprechwerk), by Core Audio UID; empty means the system default.
+    /// The name is kept to show it while the device is not connected.
+    var preferredMicrophoneUID: String = ""
+    var preferredMicrophoneName: String = ""
 
     init(
         hotkeyMode: HotkeyMode = .hold,
@@ -198,6 +202,8 @@ struct AppSettings: Codable {
         case showsRecordingIndicator
         case summarizesMeetings
         case teamVocabularyPath
+        case preferredMicrophoneUID
+        case preferredMicrophoneName
     }
 
     init(from decoder: Decoder) throws {
@@ -230,6 +236,8 @@ struct AppSettings: Codable {
         showsRecordingIndicator = try container.decodeIfPresent(Bool.self, forKey: .showsRecordingIndicator) ?? true
         summarizesMeetings = try container.decodeIfPresent(Bool.self, forKey: .summarizesMeetings) ?? true
         teamVocabularyPath = try container.decodeIfPresent(String.self, forKey: .teamVocabularyPath) ?? ""
+        preferredMicrophoneUID = try container.decodeIfPresent(String.self, forKey: .preferredMicrophoneUID) ?? ""
+        preferredMicrophoneName = try container.decodeIfPresent(String.self, forKey: .preferredMicrophoneName) ?? ""
     }
 
     func customHotkey(for type: WorkflowType) -> KeyCombo? {

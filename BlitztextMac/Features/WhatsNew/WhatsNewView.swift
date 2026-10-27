@@ -4,7 +4,7 @@ import SwiftUI
 /// or right after the first dictation for people who only use the shortcuts.
 enum WhatsNew {
     /// Bump together with the items when a release deserves a note.
-    static let version = "1.0"
+    static let version = "1.1"
 
     struct Item: Identifiable {
         let icon: String
@@ -15,14 +15,14 @@ enum WhatsNew {
 
     static let items: [Item] = [
         Item(
+            icon: "mic.fill",
+            title: "Eigenes Mikrofon",
+            detail: "Unter Einstellungen > Allgemein > Mikrofon l\u{00E4}sst sich w\u{00E4}hlen, womit Sprechwerk aufnimmt, unabh\u{00E4}ngig vom Eingang des Macs. Ist es nicht verbunden, nimmt Sprechwerk den Systemstandard. Virtuelle Ger\u{00E4}te wie Krisp oder MOTIV Mix sind markiert."
+        ),
+        Item(
             icon: "person.3.fill",
             title: "Team-Wortschatz",
             detail: "Kunden, Tools und Namen aus dem Brain schreibt Sprechwerk f\u{00FC}r alle richtig. Neues in Obsidian in agency/schaltwerk/team-wortschatz.md eintragen oder unter Einstellungen > W\u{00F6}rterbuch f\u{00FC}rs Team speichern."
-        ),
-        Item(
-            icon: "lock.shield.fill",
-            title: "Alles bleibt auf dem Mac",
-            detail: "Die Spracherkennung l\u{00E4}uft mit Parakeet auf diesem Mac, die KI-Modi mit Apple Intelligence. Der Ton verl\u{00E4}sst den Mac nie."
         ),
         Item(
             icon: "video.fill",

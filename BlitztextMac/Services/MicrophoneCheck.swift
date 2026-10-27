@@ -14,7 +14,7 @@ enum MicrophoneCheck {
     static let quietBelow: Float = 0.25
 
     static var issue: Issue? {
-        guard let device = defaultInput else { return .noInput }
+        guard let device = MicrophoneDevices.preferredDevice()?.id ?? defaultInput else { return .noInput }
         if let volume = inputVolume(of: device), volume < quietBelow {
             return .quiet(percent: Int((volume * 100).rounded()))
         }

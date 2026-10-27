@@ -575,6 +575,8 @@ struct CustomizeSettingsView: View {
 
             PipelineOverviewSection(appState: appState)
 
+            MicrophoneSection(appState: appState)
+
             // MARK: Tastenkuerzel
             SettingsSection(title: "Tastenk\u{00FC}rzel") {
 

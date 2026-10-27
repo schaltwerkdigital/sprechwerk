@@ -29,6 +29,8 @@ läuft auf dem Mac, der Ton verlässt das Gerät nicht.
   sich in den Einstellungen wahlweise nur für sich oder fürs ganze Team speichern.
 - **Kontext fürs Team:** der Abschnitt „Kontext“ der Datei beschreibt Schaltwerk für die
   KI-Modi, solange jemand keinen eigenen Kontext eingetragen hat.
+- **Mikrofon-Auswahl:** ein eigenes Mikrofon nur für Sprechwerk, mit Rückfall auf den
+  Systemstandard, wenn es nicht verbunden ist.
 - **Kurze Prompts trotz langer Liste:** an das Sprachmodell gehen nur die Team-Begriffe, die
   im Diktat vorkommen. So bleibt Apple Intelligence auf dem Mac schnell.
 - Eigener Name, eigenes Icon, eigene Bundle-ID. Sprechwerk und Blitztext stören sich nicht.
@@ -63,7 +65,12 @@ macOS 26 mit Apple Intelligence oder einen eigenen API-Key.
 | **Sprechwerk $%&!** | `fn + Option` | Frust rein, ruhige Nachricht raus |
 | **Sprechwerk :)** | `fn + Cmd` | Text mit passenden Emojis |
 
-Ohne `fn`-Taste (externe Tastaturen) eigene Kürzel in den Einstellungen setzen. Unter
+Ohne `fn`-Taste (externe Tastaturen) eigene Kürzel in den Einstellungen setzen.
+
+**Mikrofon:** Sprechwerk nimmt den Eingang, den macOS eingestellt hat. Unter **Einstellungen >
+Allgemein > Mikrofon** lässt sich ein eigenes wählen, das nur für Sprechwerk gilt; ist es nicht
+verbunden, gilt der Systemstandard. Virtuelle Geräte (Krisp, MOTIV Mix, Teams, Loom) liefern
+nur Ton, solange ihre App läuft. Kommt beim Diktieren kein Text an, liegt es fast immer daran. Unter
 **Modi > Modus je App** lässt sich z. B. Outlook immer auf Sprechwerk+ stellen.
 
 ## Team-Wortschatz pflegen

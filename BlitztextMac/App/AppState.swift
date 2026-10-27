@@ -79,6 +79,7 @@ final class AppState {
             if oldValue.teamVocabularyPath != appSettings.teamVocabularyPath {
                 teamVocabulary.configure(path: appSettings.teamVocabularyPath)
             }
+            MicrophoneDevices.preferredUID = appSettings.preferredMicrophoneUID
         }
     }
     /// Lets the recording pill react at once when its setting changes.
@@ -185,6 +186,7 @@ final class AppState {
     init() {
         let loadedAppSettings = Self.loadAppSettings()
         self.appSettings = loadedAppSettings
+        MicrophoneDevices.preferredUID = loadedAppSettings.preferredMicrophoneUID
         self.transcriptionSettings = Self.loadTranscriptionSettings()
         self.textImprovementSettings = Self.loadTextImprovementSettings()
         self.dampfAblassenSettings = Self.loadDampfAblassenSettings()
