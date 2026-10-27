@@ -86,7 +86,7 @@ final class AudioFileController {
     }
 
     func rewrite(as newMode: WorkflowType, appState: AppState) {
-        guard !transcript.isEmpty, let instruction = Self.instruction(for: newMode, appState: appState) else { return }
+        guard !transcript.isEmpty, let instruction = Self.instruction(for: newMode, transcript: transcript, appState: appState) else { return }
         task?.cancel()
         copied = false
         phase = .working("\(appState.displayName(for: newMode)) wird formuliert ...")
@@ -131,9 +131,10 @@ final class AudioFileController {
         phase = .done
     }
 
-    private static func instruction(for mode: WorkflowType, appState: AppState) -> String? {
+    private static func instruction(for mode: WorkflowType, transcript: String, appState: AppState) -> String? {
         switch mode {
-        case .textImprover: return ModePrompts.textImprovement(appState.textImprovementSettings)
+        case .textImprover:
+            return ModePrompts.textImprovement(appState.effectiveTextImprovementSettings.narrowingTeamTerms(to: transcript))
         case .dampfAblassen: return ModePrompts.dampfAblassen(appState.dampfAblassenSettings)
         case .emojiText: return ModePrompts.emoji(appState.emojiTextSettings)
         case .tapTalk, .localTapTalk: return nil

@@ -59,7 +59,7 @@ struct LocalLanguageModelSection: View {
             case .downloading(let fraction):
                 ProgressView(value: fraction)
                     .controlSize(.small)
-                Text("\(Int(fraction * 100)) %. Du kannst Blitztext weiter nutzen.")
+                Text("\(Int(fraction * 100)) %. Du kannst Sprechwerk weiter nutzen.")
                     .font(.ui(11))
                     .foregroundStyle(.secondary)
             case .failed(let message):

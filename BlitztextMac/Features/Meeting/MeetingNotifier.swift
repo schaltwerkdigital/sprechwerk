@@ -12,7 +12,7 @@ enum MeetingNotifier {
 
     static func finished(_ record: MeetingRecord) {
         let people = record.speakers.count == 1 ? "1 Person" : "\(record.speakers.count) Personen"
-        post(title: "Meeting ausgewertet", body: "\(duration(record.duration)), \(people). Im Blitztext-Men\u{00FC} unter Meeting.")
+        post(title: "Meeting ausgewertet", body: "\(duration(record.duration)), \(people). Im Sprechwerk-Men\u{00FC} unter Meeting.")
     }
 
     static func failed(_ message: String) {

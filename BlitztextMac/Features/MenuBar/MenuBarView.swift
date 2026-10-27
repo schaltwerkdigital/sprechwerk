@@ -54,7 +54,7 @@ struct MenuBarView: View {
                     NoticeRow(
                         icon: "externaldrive.badge.plus",
                         title: "Nach /Applications verschieben",
-                        detail: "So startet Blitztext zuverl\u{00E4}ssig mit dem Mac und bekommt Updates.",
+                        detail: "So startet Sprechwerk zuverl\u{00E4}ssig mit dem Mac und bekommt Updates.",
                         actionTitle: "Pr\u{00FC}fen",
                         action: { appState.page = .settings }
                     )
@@ -74,7 +74,7 @@ struct MenuBarView: View {
                     NoticeRow(
                         icon: "mic.slash.fill",
                         title: "Aufnehmen braucht das Mikrofon",
-                        detail: "Blitztext ist in den Systemeinstellungen f\u{00FC}r das Mikrofon nicht erlaubt.",
+                        detail: "Sprechwerk ist in den Systemeinstellungen f\u{00FC}r das Mikrofon nicht erlaubt.",
                         tint: BlitztextTheme.danger,
                         actionTitle: "\u{00D6}ffnen",
                         action: {
@@ -209,7 +209,7 @@ struct MenuBarView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Einrichtung n\u{00F6}tig")
                 .font(.ui(17, .bold))
-            Text("Der Assistent f\u{00FC}hrt durch Mikrofon, Einf\u{00FC}gen und Sprachmodell. Blitztext transkribiert direkt auf diesem Mac.")
+            Text("Der Assistent f\u{00FC}hrt durch Mikrofon, Einf\u{00FC}gen und Sprachmodell. Sprechwerk transkribiert direkt auf diesem Mac.")
                 .font(.ui(12.5))
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -247,7 +247,7 @@ struct MenuBarView: View {
                 }
                 .buttonStyle(.plain)
                 .disabled(!appState.isWorkflowAvailable(.tapTalk))
-                .help("Blitztext jetzt starten")
+                .help("Sprechwerk jetzt starten")
                 .accessibilityLabel("Aufnahme starten")
 
                 VStack(alignment: .leading, spacing: 3) {
@@ -422,7 +422,7 @@ struct MenuBarView: View {
                     .fixedSize()
             }
             .buttonStyle(.glassAction)
-            .help("Sprachmemo oder WhatsApp-Sprachnachricht transkribieren. Du kannst Dateien auch auf das Blitztext-Symbol im Finder ziehen.")
+            .help("Sprachmemo oder WhatsApp-Sprachnachricht transkribieren. Du kannst Dateien auch auf das Sprechwerk-Symbol im Finder ziehen.")
 
             Button {
                 appState.page = .history

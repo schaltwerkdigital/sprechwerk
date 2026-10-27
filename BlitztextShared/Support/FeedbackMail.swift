@@ -1,10 +1,10 @@
 import Foundation
 
-/// "Feedback senden": a prepared mail to the Blitztext team with the facts that help to
+/// "Feedback senden": a prepared mail to the Sprechwerk maintainer with the facts that help to
 /// understand a report. People see the whole mail before it goes out; the app itself sends
 /// nothing and adds no logs.
 enum FeedbackMail {
-    static let address = "blitztext@blackboat.com"
+    static let address = "info@schaltwerkdigital.de"
 
     /// - Parameter details: lines about this app's setup, e.g. speech model and shortcut mode.
     static func url(details: [String] = []) -> URL? {
@@ -12,7 +12,7 @@ enum FeedbackMail {
         let version = info["CFBundleShortVersionString"] as? String ?? "?"
         let build = info["CFBundleVersion"] as? String ?? "?"
         let facts = [
-            "App: Blitztext \(version) (Build \(build)) für \(platform)",
+            "App: Sprechwerk \(version) (Build \(build)) für \(platform)",
             "System: \(systemName) \(ProcessInfo.processInfo.operatingSystemVersionString)",
             "Gerät: \(deviceModel)",
         ] + details
@@ -21,7 +21,7 @@ enum FeedbackMail {
         components.scheme = "mailto"
         components.path = address
         components.queryItems = [
-            URLQueryItem(name: "subject", value: "Blitztext Feedback (\(platform) \(version), Build \(build))"),
+            URLQueryItem(name: "subject", value: "Sprechwerk Feedback (\(platform) \(version), Build \(build))"),
             URLQueryItem(name: "body", value: "\n\n\n---\nBitte oberhalb der Linie schreiben. Diese Angaben helfen uns beim Nachvollziehen, du kannst sie auch löschen:\n" + facts.joined(separator: "\n")),
         ]
         return components.url

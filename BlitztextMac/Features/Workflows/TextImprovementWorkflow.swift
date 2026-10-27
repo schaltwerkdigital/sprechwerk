@@ -122,7 +122,10 @@ final class TextImprovementWorkflow: Workflow {
 
                 let improved = try await TextRewriter.rewrite(
                     processedRawText,
-                    instruction: ModePrompts.withFieldContext(ModePrompts.textImprovement(settings), context: fieldContext()),
+                    instruction: ModePrompts.withFieldContext(
+                        ModePrompts.textImprovement(settings.narrowingTeamTerms(to: processedRawText)),
+                        context: fieldContext()
+                    ),
                     engine: rewriteEngine
                 )
 

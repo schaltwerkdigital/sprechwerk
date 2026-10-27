@@ -30,3 +30,7 @@ Secrets.swift
 
 # Tooling
 node_modules/
+
+# Sprechwerk
+Sprechwerk.app
+Sprechwerk.zip

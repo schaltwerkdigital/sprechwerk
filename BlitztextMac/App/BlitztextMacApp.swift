@@ -786,7 +786,7 @@ enum MacMeetingCompare {
                     try await model.complete(instruction: instruction, text: text, maxTokens: 1_500)
                 }
                 let summary = try await MeetingSummarizer.summarize(transcript, engine: .automatic, backend: backend)
-                variants.append(("\(variant.name) in Blitztext", Date().timeIntervalSince(modelStart), summary))
+                variants.append(("\(variant.name) in Sprechwerk", Date().timeIntervalSince(modelStart), summary))
             } catch {
                 print("\(variant.name): FEHLER \(error.localizedDescription)")
             }

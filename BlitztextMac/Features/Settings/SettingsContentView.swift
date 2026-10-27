@@ -94,7 +94,7 @@ struct PermissionWarningSection: View {
                         .font(.ui(11.5, .semibold))
                         .foregroundStyle(.primary)
 
-                    Text("\u{00D6}ffne Bedienungshilfen und aktiviere Blitztext. Steht Blitztext dort schon auf an, hier die Freigabe zur\u{00FC}cksetzen und danach neu erlauben.")
+                    Text("\u{00D6}ffne Bedienungshilfen und aktiviere Sprechwerk. Steht Sprechwerk dort schon auf an, hier die Freigabe zur\u{00FC}cksetzen und danach neu erlauben.")
                         .font(.ui(12))
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -146,7 +146,7 @@ struct PermissionWarningSection: View {
             resetErrorText = nil
             Task {
                 if !(await appState.resetAccessibilityPermission()) {
-                    resetErrorText = "Zur\u{00FC}cksetzen hat nicht geklappt. In Bedienungshilfen Blitztext mit \u{201E}\u{2212}\u{201C} entfernen und neu hinzuf\u{00FC}gen."
+                    resetErrorText = "Zur\u{00FC}cksetzen hat nicht geklappt. In Bedienungshilfen Sprechwerk mit \u{201E}\u{2212}\u{201C} entfernen und neu hinzuf\u{00FC}gen."
                 }
                 isResetting = false
             }
@@ -185,7 +185,7 @@ struct InstallationWarningSection: View {
                 .textSelection(.enabled)
 
             if !BlitztextInstallLocationService.otherInstalledBundleURLs.isEmpty {
-                Text("Auf diesem Mac liegen weitere Blitztext-Kopien. Behalte nur eine, sonst startet die App womöglich doppelt.")
+                Text("Auf diesem Mac liegen weitere Sprechwerk-Kopien. Behalte nur eine, sonst startet die App womöglich doppelt.")
                     .font(.ui(12))
                     .foregroundStyle(.primary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -225,11 +225,11 @@ struct InstallationWarningSection: View {
     private var installationHeadline: String {
         switch currentInstallLocation {
         case .applications:
-            return "Blitztext liegt am richtigen Ort."
+            return "Sprechwerk liegt am richtigen Ort."
         case .userApplications:
-            return "Blitztext liegt noch in ~/Applications."
+            return "Sprechwerk liegt noch in ~/Applications."
         case .outsideApplications:
-            return "Blitztext liegt noch nicht in /Applications."
+            return "Sprechwerk liegt noch nicht in /Applications."
         case .unknown:
             return "Der Installationsort konnte nicht sicher erkannt werden."
         }
@@ -243,11 +243,11 @@ struct InstallationWarningSection: View {
             }
             return "Diese Kopie ist korrekt. Zusätzliche Kopien solltest du später entfernen."
         case .userApplications:
-            return "Für Team-Rollouts und saubere Updates sollte Blitztext nur aus /Applications laufen."
+            return "Für Team-Rollouts und saubere Updates sollte Sprechwerk nur aus /Applications laufen."
         case .outsideApplications:
-            return "Verschiebe Blitztext einmal nach /Applications, damit Anmeldestart und spätere Updates sauber bleiben."
+            return "Verschiebe Sprechwerk einmal nach /Applications, damit Anmeldestart und spätere Updates sauber bleiben."
         case .unknown:
-            return "Öffne Blitztext möglichst direkt aus /Applications."
+            return "Öffne Sprechwerk möglichst direkt aus /Applications."
         }
     }
 
@@ -278,7 +278,7 @@ struct LaunchAtLoginSection: View {
     var body: some View {
         SettingsSection(title: "Beim Anmelden") {
 
-            Toggle("Blitztext automatisch starten", isOn: Binding(
+            Toggle("Sprechwerk automatisch starten", isOn: Binding(
                 get: { launchAtLoginService.isEnabled },
                 set: { launchAtLoginService.setEnabled($0) }
             ))
@@ -306,10 +306,10 @@ struct AboutBlitztextSection: View {
     @State private var cleanupStatusText: String?
     @State private var cleanupErrorText: String?
 
-    static let repositoryURL = "https://github.com/cmagnussen/blitztext-app"
+    static let repositoryURL = SprechwerkBrand.repositoryURL
 
     var body: some View {
-        SettingsSection(title: "\u{00DC}ber Blitztext") {
+        SettingsSection(title: "\u{00DC}ber Sprechwerk") {
 
             HStack(spacing: 10) {
                 Text("Version \(appVersion)")
@@ -330,8 +330,20 @@ struct AboutBlitztextSection: View {
                     .font(.ui(11.5, .medium))
                 }
                 .buttonStyle(.glassAction)
-                .help("Blitztext ist Open Source. Ein Stern auf GitHub hilft.")
+                .help("Quellcode und Versionen von Sprechwerk.")
             }
+
+            Text("Sprechwerk ist der Schaltwerk-Fork von Blitztext \(SprechwerkBrand.upstreamVersion) (Blackboat, MIT-Lizenz). Dazu kommt der Team-Wortschatz aus dem Brain.")
+                .font(.ui(12))
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Button("Blitztext auf GitHub") {
+                if let url = URL(string: SprechwerkBrand.upstreamURL) {
+                    NSWorkspace.shared.open(url)
+                }
+            }
+            .buttonStyle(SubtleButtonStyle())
 
             Button("Feedback senden") { sendFeedback() }
                 .buttonStyle(SubtleButtonStyle())
@@ -356,7 +368,7 @@ struct AboutBlitztextSection: View {
                     .fixedSize(horizontal: false, vertical: true)
             } else if appState.appUpdateService.updatesInApp {
                 if !BlitztextInstallLocationService.currentInstallLocation.isCanonicalInstall {
-                    Text("Auto-Updates laufen erst sauber, wenn Blitztext aus /Applications gestartet wird.")
+                    Text("Auto-Updates laufen erst sauber, wenn Sprechwerk aus /Applications gestartet wird.")
                         .font(.ui(12))
                         .foregroundStyle(.primary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -384,11 +396,17 @@ struct AboutBlitztextSection: View {
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             } else {
-                // No update feed in this build: new versions come from the releases page.
-                Text("Neue Versionen gibt es auf der Releases-Seite.")
+                // No update feed in this build: new versions come from install.sh.
+                Text("Neue Versionen holt dieselbe Zeile im Terminal, mit der Sprechwerk installiert wurde. Einstellungen und Sprachmodelle bleiben dabei erhalten.")
                     .font(.ui(12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
+
+                Button("Update-Befehl kopieren") {
+                    appState.copyToClipboard(SprechwerkBrand.installCommand)
+                }
+                .buttonStyle(SubtleButtonStyle())
+                .help(SprechwerkBrand.installCommand)
 
                 Button("Releases-Seite \u{00F6}ffnen") {
                     if let url = URL(string: Self.repositoryURL + "/releases") {
@@ -404,7 +422,7 @@ struct AboutBlitztextSection: View {
                 Toggle("Einstellungen, API-Keys und Sprachmodelle l\u{00F6}schen", isOn: $deleteLocalDataOnCleanup)
                     .toggleStyle(.trailingSwitch)
 
-                Text("Entfernt auch den Anmeldestart. Danach Blitztext beenden und die App aus /Applications l\u{00F6}schen.")
+                Text("Entfernt auch den Anmeldestart. Danach Sprechwerk beenden und die App aus /Applications l\u{00F6}schen.")
                     .font(.ui(12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -422,7 +440,7 @@ struct AboutBlitztextSection: View {
                     .foregroundStyle(BlitztextTheme.danger)
                 }
             } else {
-                Button("Blitztext von diesem Mac entfernen \u{2026}") {
+                Button("Sprechwerk von diesem Mac entfernen \u{2026}") {
                     showCleanupOptions = true
                 }
                 .buttonStyle(SubtleButtonStyle())
@@ -481,8 +499,8 @@ struct AboutBlitztextSection: View {
 
         if report.failedItems.isEmpty {
             cleanupStatusText = deleteLocalDataOnCleanup
-                ? "Anmeldestart und lokale Daten wurden bereinigt. Jetzt Blitztext beenden und aus /Applications löschen."
-                : "Anmeldestart wurde deaktiviert. Jetzt Blitztext beenden und aus /Applications löschen."
+                ? "Anmeldestart und lokale Daten wurden bereinigt. Jetzt Sprechwerk beenden und aus /Applications löschen."
+                : "Anmeldestart wurde deaktiviert. Jetzt Sprechwerk beenden und aus /Applications löschen."
             showCleanupOptions = false
 
             let urlsToReveal = report.knownInstallBundleURLs.isEmpty
@@ -512,6 +530,9 @@ struct CustomizeSettingsView: View {
     @State private var newTerm = ""
     @State private var newSpoken = ""
     @State private var newWritten = ""
+    /// New terms and replacements go into the team file instead of the personal settings.
+    @State private var addsTermsForTeam = false
+    @State private var addsReplacementsForTeam = false
     @State private var showsImproverPrompt = false
     @State private var showsDampfPrompt = false
 
@@ -602,7 +623,7 @@ struct CustomizeSettingsView: View {
                 Toggle("Aufnahme unten am Bildschirm zeigen", isOn: $appState.appSettings.showsRecordingIndicator)
                     .toggleStyle(.trailingSwitch)
 
-                Text("Eine kleine lila Anzeige bewegt sich mit deiner Stimme, solange Blitztext aufnimmt und schreibt. Ein Klick darauf stoppt die Aufnahme.")
+                Text("Eine kleine lila Anzeige bewegt sich mit deiner Stimme, solange Sprechwerk aufnimmt und schreibt. Ein Klick darauf stoppt die Aufnahme.")
                     .font(.ui(12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -611,7 +632,7 @@ struct CustomizeSettingsView: View {
                     .toggleStyle(.trailingSwitch)
                     .font(.ui(11.5))
 
-                Text("Podcast, Musik oder Video sind stumm, solange Blitztext aufnimmt, und danach sofort wieder zu h\u{00F6}ren. Pausieren kann Blitztext sie nicht, weil macOS Apps nicht verr\u{00E4}t, was gerade l\u{00E4}uft.")
+                Text("Podcast, Musik oder Video sind stumm, solange Sprechwerk aufnimmt, und danach sofort wieder zu h\u{00F6}ren. Pausieren kann Sprechwerk sie nicht, weil macOS Apps nicht verr\u{00E4}t, was gerade l\u{00E4}uft.")
                     .font(.ui(12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -638,7 +659,7 @@ struct CustomizeSettingsView: View {
                     .toggleStyle(.trailingSwitch)
                     .font(.ui(11.5))
 
-                Text("Setzt Leerzeichen und Gro\u{00DF}- und Kleinschreibung passend zum Text davor und danach. Blitztext liest dazu das Textfeld \u{00FC}ber die Bedienungshilfen, Passwortfelder nie.")
+                Text("Setzt Leerzeichen und Gro\u{00DF}- und Kleinschreibung passend zum Text davor und danach. Sprechwerk liest dazu das Textfeld \u{00FC}ber die Bedienungshilfen, Passwortfelder nie.")
                     .font(.ui(12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -670,7 +691,7 @@ struct CustomizeSettingsView: View {
             // MARK: Spracherkennung
             SettingsSection(title: "Spracherkennung") {
 
-                Text("Blitztext transkribiert immer auf diesem Mac. Das Audio verlässt das Gerät nicht.")
+                Text("Sprechwerk transkribiert immer auf diesem Mac. Das Audio verlässt das Gerät nicht.")
                     .font(.ui(12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -755,7 +776,7 @@ struct CustomizeSettingsView: View {
                     .toggleStyle(.trailingSwitch)
                     .font(.ui(11.5))
 
-                Text("Blitztext+, $%&! und :) bekommen den Text rund um den Cursor als Kontext, etwa die Mail, auf die du antwortest. Mit einem Modell-Anbieter geht dieser Text mit an den Anbieter.")
+                Text("Sprechwerk+, $%&! und :) bekommen den Text rund um den Cursor als Kontext, etwa die Mail, auf die du antwortest. Mit einem Modell-Anbieter geht dieser Text mit an den Anbieter.")
                     .font(.ui(12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -854,10 +875,12 @@ struct CustomizeSettingsView: View {
             }
 
             if pane == .dictionary {
-            // MARK: Eigennamen
-            SettingsSection(title: "Eigennamen") {
+            TeamVocabularySection(appState: appState)
 
-                Text("Namen und Fachbegriffe, die Blitztext genau so schreiben soll. KI-Modi \u{00FC}bernehmen sie unver\u{00E4}ndert.")
+            // MARK: Eigennamen
+            SettingsSection(title: "Eigene Begriffe") {
+
+                Text("Namen und Fachbegriffe, die Sprechwerk genau so schreiben soll. KI-Modi \u{00FC}bernehmen sie unver\u{00E4}ndert.")
                     .font(.ui(12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -890,6 +913,11 @@ struct CustomizeSettingsView: View {
                                 Capsule()
                                     .strokeBorder(Color.primary.opacity(0.04), lineWidth: 0.5)
                             )
+                            .contextMenu {
+                                if appState.teamVocabulary.fileURL != nil {
+                                    Button("F\u{00FC}rs Team \u{00FC}bernehmen") { moveTermToTeam(term) }
+                                }
+                            }
                         }
                     }
                 }
@@ -907,6 +935,12 @@ struct CustomizeSettingsView: View {
                     }
                     .buttonStyle(SubtleButtonStyle())
                     .disabled(newTerm.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+
+                if appState.teamVocabulary.fileURL != nil {
+                    Toggle("Neue Begriffe f\u{00FC}rs ganze Team speichern", isOn: $addsTermsForTeam)
+                        .toggleStyle(.trailingSwitch)
+                        .font(.ui(11.5))
                 }
 
                 Toggle("Eigennamen automatisch korrigieren", isOn: $appState.appSettings.correctCustomTermsEnabled)
@@ -969,6 +1003,12 @@ struct CustomizeSettingsView: View {
                     .buttonStyle(SubtleButtonStyle())
                     .disabled(!canAddReplacement)
                 }
+
+                if appState.teamVocabulary.fileURL != nil {
+                    Toggle("Neue Ersetzungen f\u{00FC}rs ganze Team speichern", isOn: $addsReplacementsForTeam)
+                        .toggleStyle(.trailingSwitch)
+                        .font(.ui(11.5))
+                }
             }
 
             SettingsSection(title: "F\u{00FC}llw\u{00F6}rter") {
@@ -995,6 +1035,12 @@ struct CustomizeSettingsView: View {
             spoken: newSpoken.trimmingCharacters(in: .whitespaces),
             written: newWritten.trimmingCharacters(in: .whitespaces)
         )
+        if addsReplacementsForTeam {
+            guard appState.teamVocabulary.add(rule) else { return }
+            newSpoken = ""
+            newWritten = ""
+            return
+        }
         withAnimation(.easeOut(duration: 0.15)) {
             appState.textImprovementSettings.replacements.removeAll { $0.id == rule.id }
             appState.textImprovementSettings.replacements.append(rule)
@@ -1005,11 +1051,24 @@ struct CustomizeSettingsView: View {
 
     private func addTerm() {
         let trimmed = newTerm.trimmingCharacters(in: .whitespaces)
+        if addsTermsForTeam, !trimmed.isEmpty {
+            guard appState.teamVocabulary.add(term: trimmed) else { return }
+            newTerm = ""
+            return
+        }
         guard !trimmed.isEmpty, !appState.textImprovementSettings.customTerms.contains(trimmed) else { return }
         withAnimation(.easeOut(duration: 0.15)) {
             appState.textImprovementSettings.customTerms.append(trimmed)
         }
         newTerm = ""
+    }
+
+    /// A personal term becomes a team term: written to the team file, then removed here.
+    private func moveTermToTeam(_ term: String) {
+        guard appState.teamVocabulary.add(term: term) else { return }
+        withAnimation(.easeOut(duration: 0.15)) {
+            appState.textImprovementSettings.customTerms.removeAll { $0 == term }
+        }
     }
 }
 

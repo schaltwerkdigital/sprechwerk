@@ -74,6 +74,9 @@ final class AppState {
             if oldValue.showsRecordingIndicator != appSettings.showsRecordingIndicator {
                 onRecordingIndicatorSettingChange?()
             }
+            if oldValue.teamVocabularyPath != appSettings.teamVocabularyPath {
+                teamVocabulary.configure(path: appSettings.teamVocabularyPath)
+            }
         }
     }
     /// Lets the recording pill react at once when its setting changes.
@@ -83,6 +86,13 @@ final class AppState {
     }
     var textImprovementSettings: TextImprovementSettings {
         didSet { saveSettings() }
+    }
+    /// The Schaltwerk team vocabulary from the Brain vault, added to the personal one.
+    let teamVocabulary = TeamVocabularyStore()
+
+    /// Personal dictionary plus the team vocabulary: what dictation and AI modes use.
+    var effectiveTextImprovementSettings: TextImprovementSettings {
+        textImprovementSettings.adding(teamVocabulary.vocabulary)
     }
     var dampfAblassenSettings: DampfAblassenSettings {
         didSet { saveSettings() }
@@ -179,6 +189,7 @@ final class AppState {
         self.emojiTextSettings = Self.loadEmojiTextSettings()
         self.history = TranscriptHistoryStore(retention: loadedAppSettings.historyRetention)
         if Self.isToolRun { return }
+        teamVocabulary.configure(path: loadedAppSettings.teamVocabularyPath)
         meeting.onPhaseChange = { [unowned self] in self.publishMenuBarStatus() }
         meeting.onEvaluationEnd = { [unowned self] result in
             // With the menu open the result is on screen already.
@@ -251,9 +262,10 @@ final class AppState {
     }
 
     var postProcessor: TranscriptPostProcessor {
-        TranscriptPostProcessor(
-            customTerms: textImprovementSettings.customTerms,
-            replacements: textImprovementSettings.replacements,
+        let settings = effectiveTextImprovementSettings
+        return TranscriptPostProcessor(
+            customTerms: settings.correctionTerms,
+            replacements: settings.allReplacements,
             correctCustomTerms: appSettings.correctCustomTermsEnabled,
             removeFillerWords: appSettings.removeFillerWordsEnabled,
             language: transcriptionSettings.language,
@@ -303,6 +315,8 @@ final class AppState {
         activeWorkflow?.stop()
         menuBarStatusResetTask?.cancel()
         workflowCleanupTask?.cancel()
+        // A quick date check; the file is only read again when a colleague changed it.
+        teamVocabulary.refreshIfChanged()
         activeLaunchSource = source
         activePasteTarget = capturePasteTarget(for: source)
         targetField = nil
@@ -334,7 +348,7 @@ final class AppState {
 
         case .textImprover:
             let workflow = TextImprovementWorkflow(
-                settings: textImprovementSettings,
+                settings: effectiveTextImprovementSettings,
                 language: transcriptionSettings.language,
                 localModelName: selectedLocalModelName,
                 rewriteEngine: appSettings.rewriteEngine,

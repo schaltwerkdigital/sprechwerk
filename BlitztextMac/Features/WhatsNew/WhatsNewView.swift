@@ -4,7 +4,7 @@ import SwiftUI
 /// or right after the first dictation for people who only use the shortcuts.
 enum WhatsNew {
     /// Bump together with the items when a release deserves a note.
-    static let version = "1.15"
+    static let version = "1.0"
 
     struct Item: Identifiable {
         let icon: String
@@ -15,19 +15,19 @@ enum WhatsNew {
 
     static let items: [Item] = [
         Item(
+            icon: "person.3.fill",
+            title: "Team-Wortschatz",
+            detail: "Kunden, Tools und Namen aus dem Brain schreibt Sprechwerk f\u{00FC}r alle richtig. Neues in Obsidian in agency/schaltwerk/team-wortschatz.md eintragen oder unter Einstellungen > W\u{00F6}rterbuch f\u{00FC}rs Team speichern."
+        ),
+        Item(
+            icon: "lock.shield.fill",
+            title: "Alles bleibt auf dem Mac",
+            detail: "Die Spracherkennung l\u{00E4}uft mit Parakeet auf diesem Mac, die KI-Modi mit Apple Intelligence. Der Ton verl\u{00E4}sst den Mac nie."
+        ),
+        Item(
             icon: "video.fill",
-            title: "Online-Meetings (Beta)",
-            detail: "Mit dem Schalter \u{201E}Online-Meeting\u{201C} nimmt Blitztext auch den Ton des Macs auf, etwa aus Teams, Zoom oder Meet, und trennt die anderen nach Stimme. Live-Notizen zeigen schon w\u{00E4}hrend des Meetings Themen, Entscheidungen und To-dos. Bitte vorher alle fragen."
-        ),
-        Item(
-            icon: "cpu",
-            title: "Lokales Sprachmodell (Beta)",
-            detail: "Unter Einstellungen > Modelle l\u{00E4}sst sich Gemma 4 laden. Es fasst lange Meetings genauer zusammen als Apple Intelligence, ganz auf diesem Mac. Blitztext zeigt, welche Gr\u{00F6}\u{00DF}e zu deinem Mac passt."
-        ),
-        Item(
-            icon: "text.cursor",
-            title: "Text landet am richtigen Ort",
-            detail: "Klickst du in ein anderes Feld, w\u{00E4}hrend ein KI-Modus noch arbeitet, kommt der Text in die Zwischenablage statt ins falsche Feld. Nach einem KI-Modus bietet das Men\u{00FC} \u{201E}Wortgenau statt \u{2026}\u{201C} an. Das erste Wort bleibt erhalten, und Blitztext sagt, wenn das Mikrofon fehlt oder sehr leise ist."
+            title: "Meetings (Beta)",
+            detail: "Im Raum oder online aufnehmen, Transkript nach Person, Zusammenfassung mit Entscheidungen und To-dos. Der Team-Wortschatz gilt auch hier. Bitte vorher alle fragen."
         ),
     ]
 }
@@ -42,7 +42,7 @@ struct WhatsNewView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Neu in Blitztext \(WhatsNew.version)")
+                Text("Neu in Sprechwerk \(WhatsNew.version)")
                     .font(BlackboatType.publicSans(20, .bold, relativeTo: .title3))
                 Text("Einmal kurz, dann geht es weiter wie gewohnt.")
                     .font(.ui(12))
@@ -77,13 +77,13 @@ struct WhatsNewView: View {
                     NoticeRow(
                         icon: "arrow.down.circle",
                         title: "Noch ein Schritt",
-                        detail: "Lade einmal ein lokales Sprachmodell, sonst kann Blitztext nicht transkribieren."
+                        detail: "Lade einmal ein lokales Sprachmodell, sonst kann Sprechwerk nicht transkribieren."
                     )
                 } else if !appState.canRewrite {
                     NoticeRow(
                         icon: "key",
                         title: "KI-Modi einrichten",
-                        detail: "Ohne Apple Intelligence brauchen Blitztext+, $%&! und :) einen eigenen API-Key."
+                        detail: "Ohne Apple Intelligence brauchen Sprechwerk+, $%&! und :) einen eigenen API-Key."
                     )
                 }
             }

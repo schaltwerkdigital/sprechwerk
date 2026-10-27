@@ -17,11 +17,11 @@ enum WorkflowType: String, CaseIterable, Identifiable, Codable {
 
     var displayName: String {
         switch self {
-        case .tapTalk: return "Blitztext"
-        case .localTapTalk: return "Blitztext Lokal"
-        case .textImprover: return "Blitztext+"
-        case .dampfAblassen: return "Blitztext $%&!"
-        case .emojiText: return "Blitztext :)"
+        case .tapTalk: return "Sprechwerk"
+        case .localTapTalk: return "Sprechwerk Lokal"
+        case .textImprover: return "Sprechwerk+"
+        case .dampfAblassen: return "Sprechwerk $%&!"
+        case .emojiText: return "Sprechwerk :)"
         }
     }
 
@@ -160,6 +160,8 @@ struct AppSettings: Codable {
     /// Write the summary right after a meeting. Off: transcript by person only, faster;
     /// the summary can still be created later.
     var summarizesMeetings: Bool = true
+    /// Team vocabulary file (Sprechwerk); empty means the Brain vault is found automatically.
+    var teamVocabularyPath: String = ""
 
     init(
         hotkeyMode: HotkeyMode = .hold,
@@ -195,6 +197,7 @@ struct AppSettings: Codable {
         case automaticParagraphs
         case showsRecordingIndicator
         case summarizesMeetings
+        case teamVocabularyPath
     }
 
     init(from decoder: Decoder) throws {
@@ -226,6 +229,7 @@ struct AppSettings: Codable {
         automaticParagraphs = try container.decodeIfPresent(Bool.self, forKey: .automaticParagraphs) ?? false
         showsRecordingIndicator = try container.decodeIfPresent(Bool.self, forKey: .showsRecordingIndicator) ?? true
         summarizesMeetings = try container.decodeIfPresent(Bool.self, forKey: .summarizesMeetings) ?? true
+        teamVocabularyPath = try container.decodeIfPresent(String.self, forKey: .teamVocabularyPath) ?? ""
     }
 
     func customHotkey(for type: WorkflowType) -> KeyCombo? {

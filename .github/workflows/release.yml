@@ -1,0 +1,58 @@
+name: Release
+
+# Builds Sprechwerk.app (universal, ad-hoc signed) and attaches Sprechwerk.zip to a GitHub
+# release. Start it by pushing a tag like v1.0.0, or by hand with a tag name.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag for the release, e.g. v1.0.0"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: macos-26
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Install XcodeGen
+        run: |
+          if ! command -v xcodegen >/dev/null 2>&1; then
+            brew install xcodegen
+          fi
+
+      - name: Build
+        run: ./build.sh --release
+
+      - name: Package
+        run: |
+          ditto -c -k --sequesterRsrc --keepParent Sprechwerk.app Sprechwerk.zip
+          shasum -a 256 Sprechwerk.zip | tee Sprechwerk.zip.sha256
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        run: |
+          version="$(defaults read "$PWD/Sprechwerk.app/Contents/Info.plist" CFBundleShortVersionString)"
+          notes="Sprechwerk $version, basiert auf Blitztext. Installieren oder aktualisieren: ./install.sh oder die ZIP entpacken und nach /Applications legen."
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" Sprechwerk.zip Sprechwerk.zip.sha256 --clobber
+          else
+            gh release create "$TAG" Sprechwerk.zip Sprechwerk.zip.sha256 \
+              --title "Sprechwerk $version" --notes "$notes" --target "$GITHUB_SHA"
+          fi

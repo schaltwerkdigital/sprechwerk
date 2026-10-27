@@ -89,7 +89,7 @@ final class MenuBarStatusController {
     private func tooltip(for status: MenuBarStatus) -> String {
         switch status {
         case .idle:
-            return "Blitztext ist bereit"
+            return "Sprechwerk ist bereit"
         case .recording(let type):
             return "\(type.displayName): Aufnahme läuft"
         case .processing(let type):
@@ -98,14 +98,14 @@ final class MenuBarStatusController {
             if let type {
                 return "\(type.displayName): Fertig"
             }
-            return "Blitztext: Fertig"
+            return "Sprechwerk: Fertig"
         case .copied:
-            return "Blitztext: Text liegt in der Zwischenablage"
+            return "Sprechwerk: Text liegt in der Zwischenablage"
         case .error(let type):
             if let type {
                 return "\(type.displayName): Fehler"
             }
-            return "Blitztext: Fehler"
+            return "Sprechwerk: Fehler"
         case .meeting:
             return "Meeting: Aufnahme l\u{00E4}uft"
         }
@@ -179,18 +179,19 @@ private enum MenuBarStatusIconRenderer {
         case processing
     }
 
+    /// Sprechwerk's mark: four sound bars, the same as menubar_icon.png.
     private static func drawBaseIcon(in bounds: CGRect, status: MenuBarStatus, frame: Int) {
-        let stripeWidths: [CGFloat] = [12, 10, 8, 6]
-        let stripeHeight: CGFloat = 2
-        let stripeSpacing: CGFloat = 1.6
-        let totalHeight = (CGFloat(stripeWidths.count) * stripeHeight) + (CGFloat(stripeWidths.count - 1) * stripeSpacing)
-        let originY = bounds.midY - (totalHeight / 2)
+        let barHeights: [CGFloat] = [6, 12, 9, 4]
+        let barWidth: CGFloat = 2
+        let barSpacing: CGFloat = 1.6
+        let totalWidth = (CGFloat(barHeights.count) * barWidth) + (CGFloat(barHeights.count - 1) * barSpacing)
+        let originX = bounds.midX - (totalWidth / 2)
         let baseAlpha = baseAlphaValues(for: status, frame: frame)
 
-        for (index, width) in stripeWidths.enumerated() {
-            let x = bounds.midX - (width / 2)
-            let y = originY + CGFloat(index) * (stripeHeight + stripeSpacing)
-            let rect = CGRect(x: x, y: y, width: width, height: stripeHeight)
+        for (index, height) in barHeights.enumerated() {
+            let x = originX + CGFloat(index) * (barWidth + barSpacing)
+            let y = bounds.midY - (height / 2)
+            let rect = CGRect(x: x, y: y, width: barWidth, height: height)
             let path = NSBezierPath(roundedRect: rect, xRadius: 1, yRadius: 1)
             NSColor.black.withAlphaComponent(baseAlpha[index]).setFill()
             path.fill()

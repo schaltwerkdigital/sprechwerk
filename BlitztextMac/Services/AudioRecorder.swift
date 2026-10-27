@@ -67,7 +67,7 @@ final class AudioRecorder: NSObject, AVAudioRecorderDelegate {
             audioRecorder?.isMeteringEnabled = true
             guard audioRecorder?.record() == true else {
                 audioRecorder = nil
-                errorMessage = "Die Aufnahme lie\u{00DF} sich nicht starten. Darf Blitztext das Mikrofon nutzen?"
+                errorMessage = "Die Aufnahme lie\u{00DF} sich nicht starten. Darf Sprechwerk das Mikrofon nutzen?"
                 return
             }
             isRecording = true

@@ -11,12 +11,16 @@ struct TextImprovementSettings: Codable {
     var context: String = ""
     var tone: TextTone = .neutral
     var customName: String = ""
+    /// The team vocabulary (Sprechwerk), added at runtime and never saved with the settings.
+    var teamTerms: [String] = []
+    var teamReplacements: [TermReplacement] = []
 
     /// Everything the language model must keep spelled exactly: custom terms and the
-    /// written side of the replacements.
+    /// written side of the replacements, personal and team.
     var protectedTerms: [String] {
         var seen = Set<String>()
-        return (customTerms + replacements.map(\.written)).filter { seen.insert($0.lowercased()).inserted }
+        let terms = customTerms + replacements.map(\.written) + teamTerms + teamReplacements.map(\.written)
+        return terms.filter { seen.insert($0.lowercased()).inserted }
     }
 
     init() {}

@@ -3,7 +3,7 @@ import AVFoundation
 
 /// Microphone access, checked before recording and shown on the main page when it is off.
 enum MicrophonePermission {
-    static let deniedMessage = "Blitztext darf das Mikrofon nicht nutzen. Bitte in den Systemeinstellungen unter Datenschutz & Sicherheit > Mikrofon erlauben."
+    static let deniedMessage = "Sprechwerk darf das Mikrofon nicht nutzen. Bitte in den Systemeinstellungen unter Datenschutz & Sicherheit > Mikrofon erlauben."
 
     static var isDenied: Bool {
         switch AVCaptureDevice.authorizationStatus(for: .audio) {

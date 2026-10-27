@@ -255,7 +255,7 @@ struct RecordingPill: View {
     private var accessibilityText: String {
         switch model.status {
         case .recording: return "Aufnahme l\u{00E4}uft. Klicken stoppt sie."
-        case .processing: return "Blitztext schreibt"
+        case .processing: return "Sprechwerk schreibt"
         case .success: return "Fertig"
         case .copied: return "Nicht eingef\u{00FC}gt, der Text liegt in der Zwischenablage"
         case .meeting: return "Meeting wird aufgenommen. Klicken \u{00F6}ffnet die Meeting-Seite."

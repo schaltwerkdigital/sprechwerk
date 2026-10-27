@@ -1,7 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-# Blitztext macOS App - Build & Run
+# Sprechwerk (Schaltwerk-Fork von Blitztext) - Build & Run
+# Optional: SPRECHWERK_SIGN_IDENTITY="Name im Schluesselbund" signiert mit einem festen
+# Zertifikat, dann bleiben die Freigaben (Bedienungshilfen) ueber Neubauten erhalten.
 # Voraussetzungen: Xcode Command Line Tools, xcodegen
 
 RUN_AFTER=false
@@ -70,7 +72,7 @@ PROJECT_FILE="$PROJECT_DIR/BlitztextMac.xcodeproj"
 # provider adds com.apple.FinderInfo xattrs to bundles, which breaks codesign with
 # "resource fork, Finder information, or similar detritus not allowed".
 # (cmagnussen/blitztext-app PR #5)
-DERIVED_DATA_PATH="$HOME/Library/Caches/blitztext-build/derivedData"
+DERIVED_DATA_PATH="$HOME/Library/Caches/sprechwerk-build/derivedData"
 cd "$PROJECT_DIR"
 
 if command -v xcodegen &> /dev/null; then
@@ -90,7 +92,7 @@ else
 fi
 
 # Bauen
-echo "🔨 Baue Blitztext ..."
+echo "🔨 Baue Sprechwerk ..."
 xcodebuild \
     -project BlitztextMac.xcodeproj \
     -scheme BlitztextMac \
@@ -102,7 +104,7 @@ xcodebuild \
     clean build
 
 # App finden
-APP_PATH="$DERIVED_DATA_PATH/Build/Products/$BUILD_CONFIGURATION/Blitztext.app"
+APP_PATH="$DERIVED_DATA_PATH/Build/Products/$BUILD_CONFIGURATION/Sprechwerk.app"
 
 if [ ! -d "$APP_PATH" ]; then
     echo "❌ Build fehlgeschlagen – keine App gefunden."
@@ -123,21 +125,21 @@ cp -f "$PROJECT_DIR/Resources/menubar_icon@2x.png" "$RESOURCES_DIR/" 2>/dev/null
 # im Projektordner (cmagnussen/blitztext-app PR #16).
 if [ "$INSTALL_APP" = true ]; then
     APPS_DIR="/Applications"
-    DEST="$APPS_DIR/Blitztext.app"
+    DEST="$APPS_DIR/Sprechwerk.app"
     if [ ! -w "$APPS_DIR" ]; then
         echo "❌ /Applications ist nicht beschreibbar."
         echo "   Fuehre den Befehl mit passenden Rechten erneut aus oder ziehe die App manuell nach /Applications."
         exit 1
     fi
 else
-    DEST="$SCRIPT_DIR/Blitztext.app"
+    DEST="$SCRIPT_DIR/Sprechwerk.app"
 fi
 
 rm -rf "$DEST"
 cp -R "$APP_PATH" "$DEST"
 # iCloud or the file provider may have added xattrs again; codesign refuses them.
 xattr -cr "$DEST" 2>/dev/null || true
-codesign --force --deep --sign - "$DEST" 2>&1
+codesign --force --deep --sign "${SPRECHWERK_SIGN_IDENTITY:--}" "$DEST" 2>&1
 verify_universal_app "$DEST"
 
 RUN_TARGET="$DEST"
@@ -155,11 +157,11 @@ echo "1. App starten"
 echo "2. Mikrofon erlauben"
 echo "3. Fuer direktes Einfuegen zusaetzlich Bedienungshilfen erlauben"
 echo "4. Lokales Sprachmodell laden, optional einen Modell-Anbieter mit API-Key eintragen"
-echo "5. Fertige, signierte Version: https://github.com/cmagnussen/blitztext-app/releases"
+echo "5. Fertige Versionen: https://github.com/schaltwerkdigital/sprechwerk/releases"
 echo ""
 
 # Optional: direkt starten
 if [ "$RUN_AFTER" = true ]; then
-    echo "🚀 Starte Blitztext ..."
+    echo "🚀 Starte Sprechwerk ..."
     open "$RUN_TARGET"
 fi

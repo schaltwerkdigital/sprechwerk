@@ -62,7 +62,7 @@ final class SystemAudioCapture {
             ? CATapDescription(stereoGlobalTapButExcludeProcesses: AudioProcesses.own.map { [$0] } ?? [])
             : CATapDescription(stereoMixdownOfProcesses: processes)
         description.uuid = UUID()
-        description.name = "Blitztext"
+        description.name = "Sprechwerk"
         description.isPrivate = true
         description.muteBehavior = .unmuted
         try check(AudioHardwareCreateProcessTap(description, &tapID), "Tap anlegen")
@@ -129,7 +129,7 @@ final class SystemAudioCapture {
     /// device its clock.
     private func startDevice(outputUID: String) throws {
         let aggregate: [String: Any] = [
-            kAudioAggregateDeviceNameKey: "Blitztext Systemton",
+            kAudioAggregateDeviceNameKey: "Sprechwerk Systemton",
             kAudioAggregateDeviceUIDKey: UUID().uuidString,
             kAudioAggregateDeviceMainSubDeviceKey: outputUID,
             kAudioAggregateDeviceIsPrivateKey: true,

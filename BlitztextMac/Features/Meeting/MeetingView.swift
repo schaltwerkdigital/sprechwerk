@@ -85,7 +85,7 @@ struct MeetingView: View {
                 Label("Meeting aufnehmen", systemImage: "person.2.wave.2.fill")
                     .font(.ui(15, .semibold))
                     .foregroundStyle(BlitztextTheme.accent)
-                Text("Blitztext nimmt das Gespr\u{00E4}ch im Raum \u{00FC}ber das Mikrofon auf, erkennt, wer spricht, und schreibt auf Wunsch eine Zusammenfassung mit To-dos. Alles l\u{00E4}uft auf diesem Mac, die Aufnahme wird nach der Auswertung gel\u{00F6}scht.")
+                Text("Sprechwerk nimmt das Gespr\u{00E4}ch im Raum \u{00FC}ber das Mikrofon auf, erkennt, wer spricht, und schreibt auf Wunsch eine Zusammenfassung mit To-dos. Alles l\u{00E4}uft auf diesem Mac, die Aufnahme wird nach der Auswertung gel\u{00F6}scht.")
                     .font(.ui(12.5))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -112,7 +112,7 @@ struct MeetingView: View {
                         BetaBadge()
                     }
                     Text(LiveNotesController.isAvailable
-                         ? "Alle zweieinhalb Minuten schreibt Blitztext mit, was besprochen und entschieden wurde. Bleibt auf diesem Mac."
+                         ? "Alle zweieinhalb Minuten schreibt Sprechwerk mit, was besprochen und entschieden wurde. Bleibt auf diesem Mac."
                          : "Brauchen Apple Intelligence oder ein lokales Sprachmodell (Einstellungen, Modelle).")
                         .font(.ui(11))
                         .foregroundStyle(.secondary)
@@ -180,7 +180,7 @@ struct MeetingView: View {
     }
 
     /// Asked in the call's chat before starting, so everyone can agree in writing.
-    static let chatNote = "Ich w\u{00FC}rde dieses Meeting gern mit Blitztext aufnehmen und auf meinem Mac transkribieren und zusammenfassen lassen. Ton und Text bleiben auf meinem Mac, die Aufnahme wird nach der Auswertung gel\u{00F6}scht. Ist das f\u{00FC}r alle in Ordnung?"
+    static let chatNote = "Ich w\u{00FC}rde dieses Meeting gern mit Sprechwerk aufnehmen und auf meinem Mac transkribieren und zusammenfassen lassen. Ton und Text bleiben auf meinem Mac, die Aufnahme wird nach der Auswertung gel\u{00F6}scht. Ist das f\u{00FC}r alle in Ordnung?"
 
     private var onlineMeeting: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -335,7 +335,7 @@ struct MeetingView: View {
                 Text(step)
                     .font(.ui(12.5, .medium))
             }
-            Text("Bei langen Meetings dauert das ein paar Minuten, alles l\u{00E4}uft auf diesem Mac. Beim ersten Mal l\u{00E4}dt Blitztext dazu einmalig das Modell f\u{00FC}r die Stimmen.")
+            Text("Bei langen Meetings dauert das ein paar Minuten, alles l\u{00E4}uft auf diesem Mac. Beim ersten Mal l\u{00E4}dt Sprechwerk dazu einmalig das Modell f\u{00FC}r die Stimmen.")
                 .font(.ui(11.5))
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)

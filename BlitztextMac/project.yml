@@ -1,6 +1,6 @@
 name: BlitztextMac
 options:
-  bundleIdPrefix: app.blitztext
+  bundleIdPrefix: de.schaltwerkdigital
   deploymentTarget:
     macOS: "14.0"
   xcodeVersion: "15.0"
@@ -11,14 +11,15 @@ settings:
     SWIFT_VERSION: "5.10"
     MACOSX_DEPLOYMENT_TARGET: "14.0"
     ONLY_ACTIVE_ARCH: NO
-    MARKETING_VERSION: "1.15.1"
-    CURRENT_PROJECT_VERSION: "42"
-    # In-app updates for installs outside Jamf (Sparkle). The feed is the appcast of the
-    # latest public GitHub release; the key is the public half of the signing key.
-    SPARKLE_FEED_URL: "https://github.com/cmagnussen/blitztext-app/releases/latest/download/appcast.xml"
-    # Name in Finder and the Dock; a design preview builds as "Blitztext Vorschau".
-    APP_DISPLAY_NAME: Blitztext
-    SPARKLE_PUBLIC_ED_KEY: "E3+VuN7OgR+preZ8H1a73gmDhNDeqvznjUxxpO8kzMM="
+    # Sprechwerk counts its own versions; the Blitztext version it is based on is
+    # SprechwerkBrand.upstreamVersion.
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    # No Sparkle feed: Sprechwerk updates through install.sh from the GitHub releases.
+    # The Blitztext feed must never be set here, it would replace Sprechwerk with Blitztext.
+    SPARKLE_FEED_URL: ""
+    APP_DISPLAY_NAME: Sprechwerk
+    SPARKLE_PUBLIC_ED_KEY: ""
 
 packages:
   Sparkle:
@@ -62,8 +63,8 @@ targets:
           - BlitztextMac.entitlements
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.blitztext.mac
-        PRODUCT_NAME: Blitztext
+        PRODUCT_BUNDLE_IDENTIFIER: de.schaltwerkdigital.sprechwerk
+        PRODUCT_NAME: Sprechwerk
         INFOPLIST_FILE: Resources/Info.plist
         INFOPLIST_KEY_CFBundleShortVersionString: $(MARKETING_VERSION)
         INFOPLIST_KEY_CFBundleVersion: $(CURRENT_PROJECT_VERSION)
@@ -105,6 +106,8 @@ targets:
       - path: Tests
       # Pure logic is compiled directly into the test bundle, so tests need no host app.
       - path: Services/TranscriptPostProcessor.swift
+      - path: Services/TeamVocabulary.swift
+      - path: ../BlitztextShared/AI/ModePrompts.swift
       - path: Services/InsertionFitter.swift
       - path: Services/WebsiteHost.swift
       - path: Services/TranscriptParagraphService.swift
@@ -125,5 +128,5 @@ targets:
       - path: ../BlitztextShared/Meeting/ListDisplay.swift
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.blitztext.mac.tests
+        PRODUCT_BUNDLE_IDENTIFIER: de.schaltwerkdigital.sprechwerk.tests
         GENERATE_INFOPLIST_FILE: YES

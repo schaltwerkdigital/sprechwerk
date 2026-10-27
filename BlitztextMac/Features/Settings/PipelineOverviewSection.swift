@@ -5,7 +5,7 @@ struct PipelineOverviewSection: View {
     @Bindable var appState: AppState
 
     var body: some View {
-        SettingsSection(title: "So arbeitet Blitztext") {
+        SettingsSection(title: "So arbeitet Sprechwerk") {
             row(
                 step: "1",
                 title: "Spracherkennung",
@@ -17,7 +17,7 @@ struct PipelineOverviewSection: View {
             )
             row(
                 step: "2",
-                title: "KI-Modi (Blitztext+, $%&!, :))",
+                title: "KI-Modi (Sprechwerk+, $%&!, :))",
                 model: aiModel,
                 detail: aiDetail,
                 ready: appState.canRewrite

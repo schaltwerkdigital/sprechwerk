@@ -12,7 +12,7 @@ actor SpeakerDiarizer {
         AppSupportPaths.localModelsDirectoryURL.appendingPathComponent("diarizer", isDirectory: true)
         #else
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-            .appendingPathComponent("Blitztext/Models/diarizer", isDirectory: true)
+            .appendingPathComponent("Sprechwerk/Models/diarizer", isDirectory: true)
         #endif
     }
 

@@ -42,7 +42,7 @@ enum TextRewriter {
         var errorDescription: String? {
             switch self {
             case .noModel:
-                return "Für diesen Modus braucht Blitztext Apple Intelligence oder einen API-Key in den Einstellungen."
+                return "Für diesen Modus braucht Sprechwerk Apple Intelligence oder einen API-Key in den Einstellungen."
             case .onDevice(let message):
                 return message
             }

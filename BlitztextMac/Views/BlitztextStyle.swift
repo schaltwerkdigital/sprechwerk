@@ -366,17 +366,20 @@ struct ModeIcon: View {
     }
 }
 
-/// "Blitztext by Blackboat" with the mark.
+/// "Sprechwerk by Schaltwerk Digital". The Blitztext and Blackboat marks are not part of the
+/// MIT license (TRADEMARKS.md), so the fork shows its own.
 struct BrandRow: View {
     var body: some View {
         HStack(spacing: 9) {
-            BlackboatMark()
-                .fill(Color.primary)
+            Image(systemName: "waveform")
+                .font(.ui(13, .bold))
+                .foregroundStyle(SprechwerkBrand.turquoise)
                 .frame(width: 24, height: 24)
+                .background(RoundedRectangle(cornerRadius: 6).fill(SprechwerkBrand.anthracite))
             VStack(alignment: .leading, spacing: 0) {
-                Text("Blitztext")
+                Text("Sprechwerk")
                     .font(.ui(15, .bold))
-                Text("by Blackboat")
+                Text("by Schaltwerk Digital")
                     .font(.ui(11))
                     .foregroundStyle(.secondary)
             }

@@ -94,7 +94,7 @@ final class MeetingStore {
         AppSupportPaths.appSupportDirectoryURL.appendingPathComponent("Meetings", isDirectory: true)
         #else
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-            .appendingPathComponent("Blitztext/Meetings", isDirectory: true)
+            .appendingPathComponent("Sprechwerk/Meetings", isDirectory: true)
         #endif
     }
 

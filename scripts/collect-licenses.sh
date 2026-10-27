@@ -14,8 +14,13 @@ OUT="$ROOT/BlitztextShared/Licenses/Licenses.txt"
 mkdir -p "$(dirname "$OUT")"
 
 {
-    echo "Blitztext: Lizenzen und Hinweise / Licenses and notices"
+    echo "Sprechwerk: Lizenzen und Hinweise / Licenses and notices"
     echo "========================================================"
+    echo
+    echo "Sprechwerk is the Schaltwerk Digital fork of Blitztext"
+    echo "(https://github.com/cmagnussen/blitztext-app). Blitztext is licensed under the MIT License:"
+    echo
+    cat "$ROOT/LICENSE"
     echo
     cat "$ROOT/THIRD_PARTY_NOTICES.md"
     echo

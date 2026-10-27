@@ -46,7 +46,7 @@ struct SetupAssistantView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("Willkommen")
                         .font(BlackboatType.publicSans(20, .bold, relativeTo: .title3))
-                    Text("bei Blitztext")
+                    Text("bei Sprechwerk")
                         .font(.ui(12, .medium))
                         .foregroundStyle(.secondary)
                 }
@@ -70,8 +70,8 @@ struct SetupAssistantView: View {
                 if BlitztextInstallLocationService.shouldOfferMoveToApplications {
                     NoticeRow(
                         icon: "arrow.down.app",
-                        title: "Lege Blitztext zuerst in den Ordner Programme",
-                        detail: "So startet Blitztext zuverl\u{00E4}ssig mit dem Mac, und die Freigaben bleiben erhalten."
+                        title: "Lege Sprechwerk zuerst in den Ordner Programme",
+                        detail: "So startet Sprechwerk zuverl\u{00E4}ssig mit dem Mac, und die Freigaben bleiben erhalten."
                     )
                 }
 
@@ -158,14 +158,14 @@ struct SetupAssistantView: View {
             case .quiet(let percent):
                 return "Erlaubt. Das Mikrofon ist aber sehr leise eingestellt (\(percent) %), in den Systemeinstellungen unter Ton, Eingang lauter stellen."
             case nil:
-                return "Blitztext darf das Mikrofon nutzen."
+                return "Sprechwerk darf das Mikrofon nutzen."
             }
         }
         switch microphone {
         case .denied, .restricted:
-            return "In den Systemeinstellungen ist das Mikrofon f\u{00FC}r Blitztext aus. Dort unter Datenschutz & Sicherheit > Mikrofon einschalten."
+            return "In den Systemeinstellungen ist das Mikrofon f\u{00FC}r Sprechwerk aus. Dort unter Datenschutz & Sicherheit > Mikrofon einschalten."
         default:
-            return "Damit Blitztext h\u{00F6}rt, was du sagst. Die Aufnahme bleibt auf diesem Mac."
+            return "Damit Sprechwerk h\u{00F6}rt, was du sagst. Die Aufnahme bleibt auf diesem Mac."
         }
     }
 
@@ -186,9 +186,9 @@ struct SetupAssistantView: View {
     }
 
     private var accessibilityDetail: String {
-        if accessibilityReady { return "Blitztext darf den Text dort einf\u{00FC}gen, wo dein Cursor steht." }
+        if accessibilityReady { return "Sprechwerk darf den Text dort einf\u{00FC}gen, wo dein Cursor steht." }
         return appState.hasRequestedAccessibility
-            ? "In den Systemeinstellungen bei Bedienungshilfen Blitztext einschalten. Danach geht es hier von selbst weiter."
+            ? "In den Systemeinstellungen bei Bedienungshilfen Sprechwerk einschalten. Danach geht es hier von selbst weiter."
             : "Damit der Text dort landet, wo dein Cursor steht. macOS fragt dazu nach den Bedienungshilfen."
     }
 
@@ -216,7 +216,7 @@ struct SetupAssistantView: View {
                 }
             }
             if resetFailed {
-                Text("Zur\u{00FC}cksetzen hat nicht geklappt. In den Bedienungshilfen Blitztext mit \u{201E}\u{2212}\u{201C} entfernen und neu hinzuf\u{00FC}gen.")
+                Text("Zur\u{00FC}cksetzen hat nicht geklappt. In den Bedienungshilfen Sprechwerk mit \u{201E}\u{2212}\u{201C} entfernen und neu hinzuf\u{00FC}gen.")
                     .font(.ui(11))
                     .foregroundStyle(BlitztextTheme.danger)
                     .fixedSize(horizontal: false, vertical: true)
@@ -230,7 +230,7 @@ struct SetupAssistantView: View {
         if modelReady { return "\(modelName) ist installiert." }
         let size = LocalModelRating.rating(for: appState.selectedLocalModelName)?.sizeLabel
         let sizeText = size.map { ", \($0)" } ?? ""
-        return "\(modelName)\(sizeText), einmalig. Danach erkennt Blitztext Sprache ohne Internet."
+        return "\(modelName)\(sizeText), einmalig. Danach erkennt Sprechwerk Sprache ohne Internet."
     }
 
     @ViewBuilder

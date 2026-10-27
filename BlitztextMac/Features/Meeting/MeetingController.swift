@@ -87,7 +87,7 @@ final class MeetingController {
         }
         return ParakeetTranscriber.isInstalled
             ? nil
-            : "F\u{00FC}r Meetings braucht Blitztext Parakeet. Bitte in den Einstellungen unter Sprachmodell laden."
+            : "F\u{00FC}r Meetings braucht Sprechwerk Parakeet. Bitte in den Einstellungen unter Sprachmodell laden."
     }
 
     /// Recording the Mac's sound needs Core Audio taps.
@@ -131,7 +131,7 @@ final class MeetingController {
             recorder.delegate = observer
             recorder.isMeteringEnabled = true
             guard recorder.record() else {
-                phase = .failed("Die Aufnahme lie\u{00DF} sich nicht starten. Darf Blitztext das Mikrofon nutzen?", meetingID: nil)
+                phase = .failed("Die Aufnahme lie\u{00DF} sich nicht starten. Darf Sprechwerk das Mikrofon nutzen?", meetingID: nil)
                 return
             }
             self.recorder = recorder
@@ -141,7 +141,7 @@ final class MeetingController {
             // Keeps the Mac awake through a long meeting; closing the lid still sends it to sleep.
             recordingActivity = ProcessInfo.processInfo.beginActivity(
                 options: [.idleSystemSleepDisabled, .userInitiated],
-                reason: "Blitztext nimmt ein Meeting auf"
+                reason: "Sprechwerk nimmt ein Meeting auf"
             )
             let withLiveNotes = wantsLiveNotes && LiveNotesController.isAvailable
             let liveBuffer = withLiveNotes && includingSystemAudio ? LiveAudioBuffer() : nil
@@ -185,7 +185,7 @@ final class MeetingController {
         }
     }
 
-    private static let outputLostNotice = "Das Ausgabeger\u{00E4}t ist weg, der Ton des Macs l\u{00E4}sst sich gerade nicht aufnehmen. Blitztext versucht es weiter, das Mikrofon l\u{00E4}uft."
+    private static let outputLostNotice = "Das Ausgabeger\u{00E4}t ist weg, der Ton des Macs l\u{00E4}sst sich gerade nicht aufnehmen. Sprechwerk versucht es weiter, das Mikrofon l\u{00E4}uft."
 
     /// Headphones unplugged or Bluetooth gone: the capture moves to the current output by itself.
     private func outputChanged(_ error: Error?) {
@@ -330,7 +330,7 @@ final class MeetingController {
             // A long evaluation must not stall because the Mac went to sleep.
             let activity = ProcessInfo.processInfo.beginActivity(
                 options: [.idleSystemSleepDisabled, .userInitiated],
-                reason: "Blitztext wertet ein Meeting aus"
+                reason: "Sprechwerk wertet ein Meeting aus"
             )
             defer { ProcessInfo.processInfo.endActivity(activity) }
             @MainActor func update(_ newPhase: Phase) {
@@ -388,7 +388,7 @@ final class MeetingController {
                     // Keep the audio, so the people can still be told apart once this works.
                     store.upsert(record)
                     update(.failed(
-                        "Die Stimmen lie\u{00DF}en sich nicht erkennen. Beim ersten Meeting l\u{00E4}dt Blitztext daf\u{00FC}r ein Modell und braucht Internet. (\(error.localizedDescription))",
+                        "Die Stimmen lie\u{00DF}en sich nicht erkennen. Beim ersten Meeting l\u{00E4}dt Sprechwerk daf\u{00FC}r ein Modell und braucht Internet. (\(error.localizedDescription))",
                         meetingID: record.id
                     ))
                     return
@@ -499,7 +499,7 @@ final class MeetingController {
                 record.summaryNote = localFailure
             } else {
                 record.summary = nil
-                record.summaryNote = "F\u{00FC}r die Zusammenfassung braucht Blitztext Apple Intelligence oder ein lokales Sprachmodell (Einstellungen, Modelle). Meetings gehen nie an einen Modell-Anbieter."
+                record.summaryNote = "F\u{00FC}r die Zusammenfassung braucht Sprechwerk Apple Intelligence oder ein lokales Sprachmodell (Einstellungen, Modelle). Meetings gehen nie an einen Modell-Anbieter."
             }
             return
         }
