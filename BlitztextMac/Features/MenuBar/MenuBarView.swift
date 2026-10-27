@@ -50,6 +50,16 @@ struct MenuBarView: View {
                     setupHero
                 }
 
+                if appState.statusItemHidden {
+                    NoticeRow(
+                        icon: "menubar.rectangle",
+                        title: "Symbol in der Men\u{00FC}leiste verdeckt",
+                        detail: "macOS blendet es aus, etwa hinter der Notch. Die K\u{00FC}rzel gehen trotzdem, und Sprechwerk erneut \u{00F6}ffnen zeigt dieses Men\u{00FC}. Platz schaffen: andere Symbole mit gedr\u{00FC}ckter Cmd-Taste aus der Leiste ziehen.",
+                        actionTitle: "OK",
+                        action: { appState.statusItemHidden = false }
+                    )
+                }
+
                 if BlitztextInstallLocationService.shouldOfferMoveToApplications {
                     NoticeRow(
                         icon: "externaldrive.badge.plus",

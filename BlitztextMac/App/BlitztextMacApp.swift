@@ -23,6 +23,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     private lazy var recordingIndicator = RecordingIndicatorController(appState: appState)
     /// Files opened before launch finished (e.g. "Open With" on a closed app).
     private var pendingAudioFile: URL?
+    /// Stands in for the status item when macOS hides it: an invisible window at the top
+    /// center of the screen for the popover to point at.
+    private var fallbackAnchor: NSWindow?
     private var didFinishLaunching = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -337,8 +340,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
             appState.isPopoverShown = false
         } else {
             appState.prepareForPopoverPresentation()
-            showPopover()
+            showPopover(fromStatusItem: true)
         }
+    }
+
+    /// Opening the running app again (Finder, Spotlight, Launchpad) shows the menu. Without
+    /// this nothing happens, and with a hidden menu bar icon the app seems not to open.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        guard didFinishLaunching, !popover.isShown else { return false }
+        appState.prepareForPopoverPresentation()
+        showPopover()
+        return false
     }
 
     private func showOnboardingIfNeeded() {
@@ -347,9 +359,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         showPopover()
     }
 
-    private func showPopover() {
+    /// At the menu bar icon, or at the top center of the screen while macOS hides the icon.
+    /// A click on the icon proves it is visible, so that path skips the check.
+    private func showPopover(fromStatusItem: Bool = false) {
         guard let button = statusItem.button else { return }
-        popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+        let iconVisible = fromStatusItem || isStatusItemVisible
+        appState.statusItemHidden = !iconVisible
+        if iconVisible {
+            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+        } else {
+            let anchor = placeFallbackAnchor()
+            popover.show(relativeTo: anchor.bounds, of: anchor, preferredEdge: .minY)
+        }
         appState.isPopoverShown = true
         NSApp.activate(ignoringOtherApps: true)
 
@@ -361,8 +382,49 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         }
     }
 
+    /// macOS hides menu bar icons that do not fit next to the notch (they slide behind it or
+    /// the app menus) and lets people switch them off under System Settings > Menu Bar.
+    private var isStatusItemVisible: Bool {
+        guard let window = statusItem.button?.window, window.isVisible,
+              window.occlusionState.contains(.visible),
+              let screen = window.screen
+        else { return false }
+        // On a screen with a notch, visible icons sit right of it.
+        if let rightOfNotch = screen.auxiliaryTopRightArea {
+            return rightOfNotch.insetBy(dx: -2, dy: -2).contains(window.frame)
+        }
+        return screen.frame.contains(window.frame)
+    }
+
+    private func placeFallbackAnchor() -> NSView {
+        let window: NSWindow
+        if let existing = fallbackAnchor {
+            window = existing
+        } else {
+            window = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 2, height: 2),
+                styleMask: .borderless,
+                backing: .buffered,
+                defer: false
+            )
+            window.isOpaque = false
+            window.backgroundColor = .clear
+            window.ignoresMouseEvents = true
+            window.level = .statusBar
+            window.isReleasedWhenClosed = false
+            window.collectionBehavior = [.canJoinAllSpaces, .transient]
+            window.contentView = NSView(frame: NSRect(x: 0, y: 0, width: 2, height: 2))
+            fallbackAnchor = window
+        }
+        let screen = NSScreen.main ?? NSScreen.screens[0]
+        window.setFrameOrigin(NSPoint(x: screen.visibleFrame.midX - 1, y: screen.visibleFrame.maxY - 2))
+        window.orderFrontRegardless()
+        return window.contentView ?? NSView()
+    }
+
     nonisolated func popoverDidClose(_ notification: Notification) {
         Task { @MainActor in
+            fallbackAnchor?.orderOut(nil)
             appState.isPopoverShown = false
             switch appState.currentPhase {
             case .done, .error:

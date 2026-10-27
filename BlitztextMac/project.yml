@@ -13,8 +13,8 @@ settings:
     ONLY_ACTIVE_ARCH: NO
     # Sprechwerk counts its own versions; the Blitztext version it is based on is
     # SprechwerkBrand.upstreamVersion.
-    MARKETING_VERSION: "1.0.1"
-    CURRENT_PROJECT_VERSION: "2"
+    MARKETING_VERSION: "1.0.2"
+    CURRENT_PROJECT_VERSION: "3"
     # No Sparkle feed: Sprechwerk updates through install.sh from the GitHub releases.
     # The Blitztext feed must never be set here, it would replace Sprechwerk with Blitztext.
     SPARKLE_FEED_URL: ""

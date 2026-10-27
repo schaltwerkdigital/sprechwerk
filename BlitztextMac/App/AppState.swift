@@ -21,6 +21,8 @@ final class AppState {
     var activeWorkflow: (any Workflow)?
     var page: PopoverPage = .main
     var isPopoverShown = false
+    /// The menu opened without its menu bar icon, which macOS hides (notch, switched off).
+    var statusItemHidden = false
     var menuBarStatus: MenuBarStatus = .idle {
         didSet {
             guard oldValue != menuBarStatus else { return }
