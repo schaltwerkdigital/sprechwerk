@@ -35,8 +35,50 @@ jobs:
             brew install xcodegen
           fi
 
+      # Signs with the team's own certificate (SPRECHWERK_SIGNING_P12): the same certificate
+      # in every release keeps macOS's microphone and accessibility grants across updates.
+      # Self-signed, so it is trusted for code signing on this throwaway runner only.
+      - name: Import signing certificate
+        env:
+          P12: ${{ secrets.SPRECHWERK_SIGNING_P12 }}
+          P12_PASSWORD: ${{ secrets.SPRECHWERK_SIGNING_PASSWORD }}
+        run: |
+          if [ -z "$P12" ]; then
+            echo "::error::Secret SPRECHWERK_SIGNING_P12 fehlt"
+            exit 1
+          fi
+          keychain="$RUNNER_TEMP/signing.keychain-db"
+          keychain_password="$(openssl rand -hex 24)"
+          echo "$P12" | base64 --decode > "$RUNNER_TEMP/signing.p12"
+          security create-keychain -p "$keychain_password" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$keychain_password" "$keychain"
+          security import "$RUNNER_TEMP/signing.p12" -k "$keychain" -P "$P12_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$keychain_password" "$keychain" > /dev/null
+          security list-keychains -d user -s "$keychain" $(security list-keychains -d user | tr -d '"')
+          security find-certificate -c "Sprechwerk Code Signing" -p "$keychain" > "$RUNNER_TEMP/signing.pem"
+          sudo security add-trusted-cert -d -r trustRoot -p codeSign -k /Library/Keychains/System.keychain "$RUNNER_TEMP/signing.pem"
+          rm "$RUNNER_TEMP/signing.p12"
+          identity="$(security find-identity -v -p codesigning "$keychain" | awk '/1\)/{print $2; exit}')"
+          if [ -z "$identity" ]; then
+            security find-identity -p codesigning "$keychain"
+            echo "::error::Signatur-Zertifikat nicht nutzbar"
+            exit 1
+          fi
+          echo "SPRECHWERK_SIGN_IDENTITY=$identity" >> "$GITHUB_ENV"
+
       - name: Build
         run: ./build.sh --release
+
+      - name: Check signature
+        run: |
+          codesign --verify --deep --strict Sprechwerk.app
+          requirement="$(codesign -d -r- Sprechwerk.app 2>&1 | grep designated)"
+          echo "$requirement"
+          if ! echo "$requirement" | grep -q "certificate"; then
+            echo "::error::Sprechwerk.app ist nicht mit dem Team-Zertifikat signiert"
+            exit 1
+          fi
 
       - name: Package
         run: |

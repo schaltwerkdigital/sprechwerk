@@ -103,9 +103,14 @@ Liegt der Vault woanders, sucht Sprechwerk auch in allen Vaults, die Obsidian ke
 
 ## Updates
 
-Neue Versionen holt dieselbe Installationszeile. Weil Sprechwerk nicht bei Apple notarisiert
-ist, kann macOS danach die Freigabe zum Einfügen verlieren: **Einstellungen > Allgemein >
+Neue Versionen holt dieselbe Installationszeile. Ab Version 1.1.1 ist jede Version mit
+demselben Team-Zertifikat signiert, deshalb bleiben Mikrofon und Bedienungshilfen über Updates
+erlaubt. Nur beim ersten Wechsel auf 1.1.1 einmal neu erlauben: **Einstellungen > Allgemein >
 Freigabe zurücksetzen** und Sprechwerk in den Bedienungshilfen wieder einschalten.
+
+Das Zertifikat ist selbst ausgestellt, nicht von Apple. Gatekeeper kennt es deshalb nicht,
+`install.sh` entfernt die Download-Markierung. Für macOS zählt nur, dass jede Version mit
+demselben Zertifikat signiert ist.
 
 ## Entwickeln
 
@@ -117,8 +122,10 @@ brew install xcodegen
 Mit `SPRECHWERK_SIGN_IDENTITY="<Zertifikat>"` signiert `build.sh` fest, dann überleben die
 Freigaben Neubauten.
 
-**Release:** Tag pushen (`git tag v1.0.1 && git push origin v1.0.1`). GitHub Actions baut die
-App auf macOS 26 und hängt `Sprechwerk.zip` an das Release. Vorher in
+**Release:** Tag pushen (`git tag v1.2.0 && git push origin v1.2.0`). GitHub Actions baut die
+App auf macOS 26, signiert sie mit dem Team-Zertifikat (Secrets `SPRECHWERK_SIGNING_P12` und
+`SPRECHWERK_SIGNING_PASSWORD`), prüft die Signatur und hängt `Sprechwerk.zip` an das Release.
+Ohne die Secrets bricht der Release ab, damit keine Version mit anderer Signatur rausgeht. Vorher in
 `BlitztextMac/project.yml` `MARKETING_VERSION` und `CURRENT_PROJECT_VERSION` erhöhen.
 
 **Blitztext-Updates übernehmen:**

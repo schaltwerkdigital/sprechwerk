@@ -74,7 +74,9 @@ echo ""
 if [ "$UPDATE" = true ]; then
     echo "✅ $APP_NAME $VERSION ist aktualisiert."
     echo ""
-    echo "Fügt Sprechwerk keinen Text mehr ein: Einstellungen > Allgemein >"
+    echo "Ab Version 1.1.1 tragen alle Versionen dieselbe Signatur, Mikrofon und"
+    echo "Bedienungshilfen bleiben erlaubt. Nur beim ersten Wechsel auf 1.1.1 oder falls"
+    echo "Sprechwerk keinen Text mehr einfügt: Einstellungen > Allgemein >"
     echo "„Freigabe zurücksetzen“ und Sprechwerk in den Bedienungshilfen wieder erlauben."
 else
     echo "✅ $APP_NAME $VERSION ist installiert."
