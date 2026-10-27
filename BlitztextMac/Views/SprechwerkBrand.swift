@@ -3,7 +3,8 @@ import SwiftUI
 /// What makes this fork Sprechwerk: Schaltwerk colors, where it lives, what it is based on.
 enum SprechwerkBrand {
     /// Schaltwerk Digital brand colors (speech bubble mark).
-    static let anthracite = Color(red: 0x2A / 255, green: 0x2D / 255, blue: 0x34 / 255)
+    /// #333 as in logo-sw-bubble-fullcolor-positive.svg.
+    static let anthracite = Color(red: 0x33 / 255, green: 0x33 / 255, blue: 0x33 / 255)
     static let turquoise = Color(red: 0x2C / 255, green: 0xD5 / 255, blue: 0xC4 / 255)
 
     static let repositoryURL = "https://github.com/schaltwerkdigital/sprechwerk"
